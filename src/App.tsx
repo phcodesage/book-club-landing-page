@@ -32,6 +32,18 @@ function App() {
           </p>
         </header>
 
+        <div className="text-center mb-8">
+          <a
+            href="https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-8 py-4 text-lg font-bold rounded-full transition-transform hover:scale-105 shadow-lg"
+            style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}
+          >
+            Join Book Club Now
+          </a>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="rounded-2xl p-8 shadow-2xl transition-transform hover:scale-105" style={{ backgroundColor: '#f7e0e0' }}>
             <div className="mb-6">
