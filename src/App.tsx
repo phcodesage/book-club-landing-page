@@ -15,9 +15,9 @@ function App() {
           <div className="flex items-center justify-center mb-6">
             <BookOpen className="w-20 h-20" style={{ color: '#ca3433' }} />
           </div>
-          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">BOOK CLUB</h1>
+          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6">TEENS BOOK CLUB</h1>
           <p className="text-2xl md:text-3xl font-light text-white max-w-2xl">
-            Join us for transformative reading experiences
+            Connect with fellow readers, gain fresh perspectives, and share how the book's themes truly relate to your life. It's where great reading helps you Ignite Your Brilliance!
           </p>
         </div>
       </div>
@@ -33,6 +33,11 @@ function App() {
         </header>
 
         <div className="text-center mb-8">
+          <div className="mb-4">
+            <span className="inline-block px-6 py-3 text-xl font-bold rounded-lg" style={{ backgroundColor: '#f7e0e0', color: '#ca3433' }}>
+              $50 Monthly
+            </span>
+          </div>
           <a
             href="https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00"
             target="_blank"
