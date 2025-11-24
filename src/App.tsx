@@ -1,4 +1,5 @@
 import { BookOpen, Calendar, Clock } from 'lucide-react';
+import yourLifeYourWay from './assets/your-life-your-way.jpg';
 
 function App() {
   return (
@@ -49,38 +50,18 @@ function App() {
           </a>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="rounded-2xl p-8 shadow-2xl transition-transform hover:scale-105" style={{ backgroundColor: '#f7e0e0' }}>
-            <div className="mb-6">
-              <span className="text-sm font-bold tracking-wider" style={{ color: '#ca3433' }}>NOVEMBER</span>
-              <h2 className="text-2xl md:text-3xl font-bold mt-2" style={{ color: '#0e1f3e' }}>
-                The 6 Most Important Decisions You'll Ever Make: A Guide for Teens
-              </h2>
-            </div>
+        <div className="flex justify-center mb-12">
 
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Calendar className="w-5 h-5 mt-1 flex-shrink-0" style={{ color: '#ca3433' }} />
-                <div>
-                  <p className="font-semibold" style={{ color: '#0e1f3e' }}>Meeting Days</p>
-                  <p className="text-sm" style={{ color: '#0e1f3e', opacity: 0.8 }}>
-                    Thursdays: Nov 13 and Nov 26
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 mt-1 flex-shrink-0" style={{ color: '#ca3433' }} />
-                <div>
-                  <p className="font-semibold" style={{ color: '#0e1f3e' }}>Time</p>
-                  <p className="text-sm" style={{ color: '#0e1f3e', opacity: 0.8 }}>4:00 PM</p>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <div className="rounded-2xl p-8 shadow-2xl transition-transform hover:scale-105" style={{ backgroundColor: '#f7e0e0' }}>
             <div className="mb-6">
+              <div className="flex justify-center mb-6">
+                <img
+                  src={yourLifeYourWay}
+                  alt="Your Life, Your Way Book Cover"
+                  className="w-48 h-auto rounded shadow-md"
+                />
+              </div>
               <span className="text-sm font-bold tracking-wider" style={{ color: '#ca3433' }}>DECEMBER</span>
               <h2 className="text-2xl md:text-3xl font-bold mt-2" style={{ color: '#0e1f3e' }}>
                 Your Life, Your Way
