@@ -207,7 +207,7 @@ function App() {
                 <div>
                   <p className="font-bold text-lg" style={{ color: '#0e1f3e' }}>Meeting Days</p>
                   <p className="text-base font-semibold" style={{ color: '#0e1f3e', opacity: 0.7 }}>
-                    📅 Tuesdays: Jan 14 & Jan 28
+                    📅 Wednesdays: Jan 14 & Jan 28
                   </p>
                 </div>
               </div>
