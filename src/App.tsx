@@ -1,9 +1,148 @@
 import { BookOpen, Calendar, Clock, Sparkles, Users, Zap } from 'lucide-react';
-import yourLifeYourWay from './assets/your-life-your-way.jpg';
-import divergentBook from './assets/divergent-book.webp';
+import { useState } from 'react';
 import siteBg from './assets/site-bg.png';
 
+// Import all teen book images
+import strongerThanYouThink from './assets/stronger-than-you-think.webp';
+import youOwnersManual from "./assets/You-the-ownser's-manual-for-teens.jpg";
+import behindHappyFaces from './assets/behind-happy-faces.jpg';
+import leaderInMe from './assets/the-leader-in-me.jpg';
+import dontSweatSmallStuff from "./assets/don't-sweat-the-small-stuff.jpg";
+import teensGuideForMakingFriends from "./assets/the-teen-girl's-survival-guide.jpg";
+import getOutOfMyLife from './assets/get-out-of-my-life-but-first-could-you-drive-me-and-cherly-to-the-mall.jpg';
+import bffAndNrf from './assets/bff-or-nrf.jpg';
+import teenInvestor from './assets/teenvestor-the-practical-investment-guide-for-teens-and-their-parents.jpg';
+import lifeSkillsForTeens from './assets/life-skills-for-tweens.jpg';
+import yearOfPositiveThinking from './assets/a-year-of-positive-thinking-for-teens.jpg';
+import whatDoYouReallyWant from './assets/what-do-you-really-want.jpg';
+
+// Teen books data for 2026
+const teenBooks = [
+  {
+    id: 1,
+    month: 'January 2026',
+    title: 'You Are Stronger Than You Think',
+    author: 'Gary Lew',
+    meetings: 'January 15 & 29',
+    time: '5:00 PM',
+    image: strongerThanYouThink,
+    emoji: '💪'
+  },
+  {
+    id: 2,
+    month: 'February 2026',
+    title: "You: The Owner's Manual for Teens",
+    author: '',
+    meetings: 'February 11 & 25',
+    time: '5:00 PM',
+    image: youOwnersManual,
+    emoji: '📖'
+  },
+  {
+    id: 3,
+    month: 'March 2026',
+    title: 'Behind Happy Faces: Talking About Mental Health & Emotion',
+    author: 'Ross Szabo',
+    meetings: 'March 12 & 26',
+    time: '5:00 PM',
+    image: behindHappyFaces,
+    emoji: '😊'
+  },
+  {
+    id: 4,
+    month: 'April 2026',
+    title: 'The Leader in Me (Teens Edition)',
+    author: 'Stephen Covey',
+    meetings: 'April 9 & 30',
+    time: '5:00 PM',
+    image: leaderInMe,
+    emoji: '🌟'
+  },
+  {
+    id: 5,
+    month: 'May 2026',
+    title: "Don't Sweat the Small Stuff for Teens",
+    author: 'Richard Carlson',
+    meetings: 'May 14 & 28',
+    time: '5:00 PM',
+    image: dontSweatSmallStuff,
+    emoji: '😎'
+  },
+  {
+    id: 6,
+    month: 'June 2026',
+    title: "The Teen's Guide for Making & Making Friends",
+    author: 'Lucie Hemmon, PhD',
+    meetings: 'June 11 & 25',
+    time: '5:00 PM',
+    image: teensGuideForMakingFriends,
+    emoji: '🤝'
+  },
+  {
+    id: 7,
+    month: 'July 2026',
+    title: 'Get Out of My Life, but First Could You Drive Me & Cheryl to the Mall?',
+    author: '',
+    meetings: 'July 9 & 30',
+    time: '5:00 PM',
+    image: getOutOfMyLife,
+    emoji: '🚗'
+  },
+  {
+    id: 8,
+    month: 'August 2026',
+    title: 'BFF & NRF (Not Really Friends) – Friendship Health Guide',
+    author: '',
+    meetings: 'August 13 & 27',
+    time: '6:00 PM',
+    image: bffAndNrf,
+    emoji: '👯'
+  },
+  {
+    id: 9,
+    month: 'September 2026',
+    title: 'The Teen Investor: How to Start Early, Invest Often & Build Wealth',
+    author: 'Emmanuel Modu & Andrea Walker',
+    meetings: 'September 10 & 24',
+    time: '5:00 PM',
+    image: teenInvestor,
+    emoji: '💰'
+  },
+  {
+    id: 10,
+    month: 'October 2026',
+    title: 'Life Skills for Teens',
+    author: 'Forne Bowe',
+    meetings: 'October 8 & 29',
+    time: '5:00 PM',
+    image: lifeSkillsForTeens,
+    emoji: '🛠️'
+  },
+  {
+    id: 11,
+    month: 'November 2026',
+    title: 'A Year of Positive Thinking for Teens',
+    author: 'Katie Hurley',
+    meetings: 'November 12 & 26',
+    time: '5:00 PM',
+    image: yearOfPositiveThinking,
+    emoji: '✨'
+  },
+  {
+    id: 12,
+    month: 'December 2026',
+    title: 'What Do You Really Want? How to Set a Goal & Go for it!',
+    author: 'Beverly K. Bachel',
+    meetings: 'December 3 & 23',
+    time: '5:00 PM',
+    image: whatDoYouReallyWant,
+    emoji: '🎯'
+  }
+];
+
 function App() {
+  const [selectedBook, setSelectedBook] = useState<typeof teenBooks[0] | null>(null);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0e1f3e' }}>
       {/* Hero Section with Gradient Overlay */}
@@ -60,14 +199,14 @@ function App() {
           <div className="inline-block mb-4">
             <span className="text-sm font-bold tracking-widest uppercase px-4 py-2 rounded-full"
               style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
-              📚 What's Next
+              📚 2026 Reading List
             </span>
           </div>
           <h2 className="text-5xl md:text-6xl font-black mb-4 tracking-tight" style={{ color: '#f7e0e0' }}>
-            Upcoming Sessions
+            Teen Books for 2026
           </h2>
           <p className="text-xl font-light" style={{ color: '#f7e0e0', opacity: 0.9 }}>
-            Mark your calendars for these <span className="font-bold">epic</span> discussions 🎯
+            Explore our exciting lineup of books for the year! 🎯
           </p>
         </header>
 
@@ -98,135 +237,142 @@ function App() {
           </div>
         </div>
 
-        {/* Book Club Cards */}
-        <div className="grid lg:grid-cols-2 gap-10 mb-16 max-w-5xl mx-auto">
-          {/* Teens Book Club */}
-          <div className="group rounded-3xl p-10 shadow-2xl transition-all duration-500 hover:scale-105 card-glow animate-slide-in relative overflow-hidden"
-            style={{ backgroundColor: '#f7e0e0' }}>
-            {/* Decorative corner accent */}
-            <div className="absolute top-0 right-0 w-32 h-32 opacity-10"
-              style={{ background: 'radial-gradient(circle, #ca3433 0%, transparent 70%)' }}></div>
+        {/* Book Gallery Section */}
+        <section className="mb-16">
+          <div className="text-center mb-10">
+            <h3 className="text-3xl md:text-4xl font-bold" style={{ color: '#f7e0e0' }}>
+              📖 Complete 2026 Reading Schedule
+            </h3>
+            <p className="mt-2 text-lg" style={{ color: '#f7e0e0', opacity: 0.8 }}>
+              Click on any book to see more details
+            </p>
+          </div>
 
-            <div className="mb-8">
-              <div className="flex justify-center mb-8 relative">
-                <div className="relative group-hover:scale-110 transition-transform duration-500">
-                  <img
-                    src={yourLifeYourWay}
-                    alt="Your Life, Your Way Book Cover"
-                    className="w-56 h-auto rounded-xl shadow-2xl"
-                  />
-                  <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-full flex items-center justify-center font-black text-2xl"
+          {/* Responsive Grid Book Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {teenBooks.map((book, index) => (
+              <div
+                key={book.id}
+                onClick={() => setSelectedBook(book)}
+                className="group rounded-2xl p-5 shadow-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden animate-fade-in"
+                style={{
+                  backgroundColor: '#f7e0e0',
+                  animationDelay: `${index * 0.05}s`
+                }}
+              >
+                {/* Month badge */}
+                <div className="absolute top-3 left-3 z-10">
+                  <span className="text-xs font-bold px-3 py-1.5 rounded-full shadow-md"
                     style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
-                    🎯
+                    {book.month}
+                  </span>
+                </div>
+
+                {/* Book Image */}
+                <div className="flex justify-center mb-4 mt-8">
+                  <div className="relative group-hover:scale-110 transition-transform duration-500">
+                    <img
+                      src={book.image}
+                      alt={book.title}
+                      className="w-32 h-48 sm:w-36 sm:h-52 object-cover rounded-lg shadow-lg"
+                    />
+                    <div className="absolute -bottom-2 -right-2 w-9 h-9 rounded-full flex items-center justify-center text-base shadow-md"
+                      style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
+                      {book.emoji}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Book Info */}
+                <div className="text-center">
+                  <h4 className="font-bold text-sm leading-tight mb-2 line-clamp-2 min-h-[2.5rem]" style={{ color: '#0e1f3e' }}>
+                    {book.title}
+                  </h4>
+                  {book.author ? (
+                    <p className="text-xs mb-3 line-clamp-1" style={{ color: '#0e1f3e', opacity: 0.7 }}>
+                      by {book.author}
+                    </p>
+                  ) : (
+                    <p className="text-xs mb-3" style={{ color: '#0e1f3e', opacity: 0.5 }}>
+                      &nbsp;
+                    </p>
+                  )}
+                  <div className="flex items-center justify-center gap-1 text-xs" style={{ color: '#ca3433' }}>
+                    <Calendar className="w-3 h-3" />
+                    <span className="font-semibold">{book.meetings}</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-1 text-xs mt-1" style={{ color: '#ca3433' }}>
+                    <Clock className="w-3 h-3" />
+                    <span className="font-semibold">{book.time}</span>
                   </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </section>
 
-              <div className="text-center mb-4">
-                <span className="inline-block text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full mb-3"
+        {/* Book Modal */}
+        {selectedBook && (
+          <div
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedBook(null)}
+          >
+            <div
+              className="max-w-lg w-full rounded-3xl p-8 shadow-2xl relative"
+              style={{ backgroundColor: '#f7e0e0' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedBook(null)}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold transition-all hover:scale-110"
+                style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}
+              >
+                ×
+              </button>
+
+              <div className="text-center">
+                <span className="inline-block text-sm font-bold px-4 py-2 rounded-full mb-4"
                   style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
-                  👥 Teens Book Club
+                  {selectedBook.month}
                 </span>
-                <h2 className="text-3xl md:text-4xl font-black mt-2 leading-tight" style={{ color: '#0e1f3e' }}>
-                  Your Life, Your Way
-                </h2>
-              </div>
-            </div>
 
-            <div className="space-y-5">
-              <div className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:translate-x-2"
-                style={{ backgroundColor: 'rgba(14, 31, 62, 0.05)' }}>
-                <div className="p-2 rounded-lg" style={{ backgroundColor: '#ca3433' }}>
-                  <Calendar className="w-6 h-6" style={{ color: '#f7e0e0' }} />
+                <div className="flex justify-center mb-6">
+                  <img
+                    src={selectedBook.image}
+                    alt={selectedBook.title}
+                    className="w-48 h-auto rounded-xl shadow-2xl"
+                  />
                 </div>
-                <div>
-                  <p className="font-bold text-lg" style={{ color: '#0e1f3e' }}>Meeting Days</p>
-                  <p className="text-base font-semibold" style={{ color: '#0e1f3e', opacity: 0.7 }}>
-                    📅 Thursdays: Dec 11 & Dec 25
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:translate-x-2"
-                style={{ backgroundColor: 'rgba(14, 31, 62, 0.05)' }}>
-                <div className="p-2 rounded-lg" style={{ backgroundColor: '#ca3433' }}>
-                  <Clock className="w-6 h-6" style={{ color: '#f7e0e0' }} />
-                </div>
-                <div>
-                  <p className="font-bold text-lg" style={{ color: '#0e1f3e' }}>Time</p>
-                  <p className="text-base font-semibold" style={{ color: '#0e1f3e', opacity: 0.7 }}>
-                    ⏰ 4:00 PM
+                <h3 className="text-2xl font-black mb-2" style={{ color: '#0e1f3e' }}>
+                  {selectedBook.title}
+                </h3>
+                {selectedBook.author && (
+                  <p className="text-base font-semibold mb-4" style={{ color: '#0e1f3e', opacity: 0.7 }}>
+                    by {selectedBook.author}
                   </p>
+                )}
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-center gap-3 p-3 rounded-xl"
+                    style={{ backgroundColor: 'rgba(14, 31, 62, 0.08)' }}>
+                    <Calendar className="w-5 h-5" style={{ color: '#ca3433' }} />
+                    <span className="font-bold" style={{ color: '#0e1f3e' }}>
+                      Meetings: {selectedBook.meetings}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-center gap-3 p-3 rounded-xl"
+                    style={{ backgroundColor: 'rgba(14, 31, 62, 0.08)' }}>
+                    <Clock className="w-5 h-5" style={{ color: '#ca3433' }} />
+                    <span className="font-bold" style={{ color: '#0e1f3e' }}>
+                      Time: {selectedBook.time}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Divergent Book Club */}
-          <div className="group rounded-3xl p-10 shadow-2xl transition-all duration-500 hover:scale-105 card-glow animate-slide-in relative overflow-hidden"
-            style={{ backgroundColor: '#f7e0e0', animationDelay: '0.2s' }}>
-            {/* Decorative corner accent */}
-            <div className="absolute top-0 right-0 w-32 h-32 opacity-10"
-              style={{ background: 'radial-gradient(circle, #ca3433 0%, transparent 70%)' }}></div>
-
-            <div className="mb-8">
-              <div className="flex justify-center mb-8 relative">
-                <div className="relative group-hover:scale-110 transition-transform duration-500">
-                  <img
-                    src={divergentBook}
-                    alt="Divergent Book Cover"
-                    className="w-56 h-auto rounded-xl shadow-2xl"
-                  />
-                  <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-full flex items-center justify-center font-black text-2xl"
-                    style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
-                    🔥
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-center mb-4">
-                <span className="inline-block text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full mb-3"
-                  style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
-                  � Teen Book Club
-                </span>
-                <h2 className="text-3xl md:text-4xl font-black mt-2 leading-tight" style={{ color: '#0e1f3e' }}>
-                  Divergent
-                </h2>
-                <p className="text-sm font-semibold mt-1" style={{ color: '#0e1f3e', opacity: 0.6 }}>
-                  by Veronica Roth
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-5">
-              <div className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:translate-x-2"
-                style={{ backgroundColor: 'rgba(14, 31, 62, 0.05)' }}>
-                <div className="p-2 rounded-lg" style={{ backgroundColor: '#ca3433' }}>
-                  <Calendar className="w-6 h-6" style={{ color: '#f7e0e0' }} />
-                </div>
-                <div>
-                  <p className="font-bold text-lg" style={{ color: '#0e1f3e' }}>Meeting Days</p>
-                  <p className="text-base font-semibold" style={{ color: '#0e1f3e', opacity: 0.7 }}>
-                    📅 Wednesdays: Jan 14 & Jan 28
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300 hover:translate-x-2"
-                style={{ backgroundColor: 'rgba(14, 31, 62, 0.05)' }}>
-                <div className="p-2 rounded-lg" style={{ backgroundColor: '#ca3433' }}>
-                  <Clock className="w-6 h-6" style={{ color: '#f7e0e0' }} />
-                </div>
-                <div>
-                  <p className="font-bold text-lg" style={{ color: '#0e1f3e' }}>Time</p>
-                  <p className="text-base font-semibold" style={{ color: '#0e1f3e', opacity: 0.7 }}>
-                    ⏰ 6:00 PM
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* Footer Info */}
         <footer className="text-center">
@@ -234,7 +380,7 @@ function App() {
             style={{ backgroundColor: '#ca3433' }}>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
             <p className="text-white font-bold text-xl relative z-10">
-              ⏰ December meetings at 4:00 PM • January meetings at 6:00 PM
+              ⏰ Most meetings at 5:00 PM • August meetings at 6:00 PM
             </p>
           </div>
 
@@ -257,6 +403,35 @@ function App() {
           </div>
         </footer>
       </div>
+
+      <style>{`
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .line-clamp-1 {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.5s ease-out forwards;
+          opacity: 0;
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }
