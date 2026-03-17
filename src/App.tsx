@@ -140,6 +140,18 @@ const teenBooks = [
   }
 ];
 
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function isMonthPast(monthStr: string): boolean {
+  const now = new Date();
+  const [monthName, yearStr] = monthStr.split(' ');
+  const monthIndex = MONTH_NAMES.indexOf(monthName);
+  const year = parseInt(yearStr, 10);
+  if (year < now.getFullYear()) return true;
+  if (year > now.getFullYear()) return false;
+  return monthIndex < now.getMonth();
+}
+
 function App() {
   const [selectedBook, setSelectedBook] = useState<typeof teenBooks[0] | null>(null);
 
@@ -250,31 +262,40 @@ function App() {
 
           {/* Responsive Grid Book Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {teenBooks.map((book, index) => (
+            {teenBooks.map((book, index) => {
+              const isPast = isMonthPast(book.month);
+              return (
               <div
                 key={book.id}
-                onClick={() => setSelectedBook(book)}
-                className="group rounded-2xl p-5 shadow-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden animate-fade-in"
+                onClick={isPast ? undefined : () => setSelectedBook(book)}
+                className={`group rounded-2xl p-5 shadow-xl transition-all duration-500 relative overflow-hidden animate-fade-in ${isPast ? 'cursor-default grayscale' : 'cursor-pointer hover:scale-105 hover:shadow-2xl'}`}
                 style={{
                   backgroundColor: '#f7e0e0',
-                  animationDelay: `${index * 0.05}s`
+                  animationDelay: `${index * 0.05}s`,
+                  opacity: isPast ? 0.6 : 1
                 }}
               >
                 {/* Month badge */}
-                <div className="absolute top-3 left-3 z-10">
+                <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
                   <span className="text-xs font-bold px-3 py-1.5 rounded-full shadow-md"
                     style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
                     {book.month}
                   </span>
+                  {isPast && (
+                    <span className="text-xs font-bold px-3 py-1 rounded-full shadow-md text-center"
+                      style={{ backgroundColor: '#666', color: '#fff' }}>
+                      Completed
+                    </span>
+                  )}
                 </div>
 
                 {/* Book Image */}
                 <div className="flex justify-center mb-4 mt-8">
-                  <div className="relative group-hover:scale-110 transition-transform duration-500">
+                  <div className={`relative transition-transform duration-500 ${isPast ? '' : 'group-hover:scale-110'}`}>
                     <img
                       src={book.image}
                       alt={book.title}
-                      className="w-32 h-48 sm:w-36 sm:h-52 object-cover rounded-lg shadow-lg"
+                      className={`w-32 h-48 sm:w-36 sm:h-52 object-cover rounded-lg shadow-lg transition-all duration-300 ${isPast ? 'grayscale' : ''}`}
                     />
                     <div className="absolute -bottom-2 -right-2 w-9 h-9 rounded-full flex items-center justify-center text-base shadow-md"
                       style={{ backgroundColor: '#ca3433', color: '#f7e0e0' }}>
@@ -307,7 +328,8 @@ function App() {
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
