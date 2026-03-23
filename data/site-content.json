@@ -1,0 +1,127 @@
+{
+  "hero": {
+    "title": "TEENS BOOK CLUB",
+    "description": "Connect with fellow readers, gain fresh perspectives, and share how each book relates to your life. It is where great reading helps you ignite your brilliance.",
+    "communityLabel": "Join our growing community of readers"
+  },
+  "pricing": {
+    "amount": "50",
+    "intervalLabel": "/ month",
+    "ctaLabel": "Join Book Club Now",
+    "ctaHref": "https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00",
+    "helperText": "Join the teen reading community and reserve your spot."
+  },
+  "schedule": {
+    "eyebrow": "2026 Reading List",
+    "title": "Teen Books for 2026",
+    "description": "Explore the full lineup and open any current title for the meeting details.",
+    "galleryTitle": "Complete 2026 Reading Schedule",
+    "galleryDescription": "Click on any current book to see the meeting details."
+  },
+  "footer": {
+    "bannerText": "Most meetings start at 5:00 PM | August meetings start at 6:00 PM",
+    "highlightItems": [
+      "Engaging Discussions",
+      "Strong Community",
+      "Practical Takeaways"
+    ]
+  },
+  "books": [
+    {
+      "month": "January 2026",
+      "title": "You Are Stronger Than You Think",
+      "author": "Gary Lew",
+      "meetings": "January 15 and 29",
+      "time": "5:00 PM",
+      "imageKey": "stronger-than-you-think"
+    },
+    {
+      "month": "February 2026",
+      "title": "You: The Owner's Manual for Teens",
+      "author": "",
+      "meetings": "February 11 and 25",
+      "time": "5:00 PM",
+      "imageKey": "you-owners-manual"
+    },
+    {
+      "month": "March 2026",
+      "title": "Behind Happy Faces: Talking About Mental Health and Emotion",
+      "author": "Ross Szabo",
+      "meetings": "March 12 and 26",
+      "time": "5:00 PM",
+      "imageKey": "behind-happy-faces"
+    },
+    {
+      "month": "April 2026",
+      "title": "The Leader in Me (Teens Edition)",
+      "author": "Stephen Covey",
+      "meetings": "April 9 and 30",
+      "time": "5:00 PM",
+      "imageKey": "leader-in-me"
+    },
+    {
+      "month": "May 2026",
+      "title": "Don't Sweat the Small Stuff for Teens",
+      "author": "Richard Carlson",
+      "meetings": "May 14 and 28",
+      "time": "5:00 PM",
+      "imageKey": "dont-sweat-small-stuff"
+    },
+    {
+      "month": "June 2026",
+      "title": "The Teen's Guide for Making and Making Friends",
+      "author": "Lucie Hemmen, PhD",
+      "meetings": "June 11 and 25",
+      "time": "5:00 PM",
+      "imageKey": "teens-guide-friends"
+    },
+    {
+      "month": "July 2026",
+      "title": "Get Out of My Life, but First Could You Drive Me and Cheryl to the Mall?",
+      "author": "",
+      "meetings": "July 9 and 30",
+      "time": "5:00 PM",
+      "imageKey": "get-out-of-my-life"
+    },
+    {
+      "month": "August 2026",
+      "title": "BFF and NRF (Not Really Friends) - Friendship Health Guide",
+      "author": "",
+      "meetings": "August 13 and 27",
+      "time": "6:00 PM",
+      "imageKey": "bff-and-nrf"
+    },
+    {
+      "month": "September 2026",
+      "title": "The Teen Investor: How to Start Early, Invest Often and Build Wealth",
+      "author": "Emmanuel Modu and Andrea Walker",
+      "meetings": "September 10 and 24",
+      "time": "5:00 PM",
+      "imageKey": "teen-investor"
+    },
+    {
+      "month": "October 2026",
+      "title": "Life Skills for Teens",
+      "author": "Forne Bowe",
+      "meetings": "October 8 and 29",
+      "time": "5:00 PM",
+      "imageKey": "life-skills"
+    },
+    {
+      "month": "November 2026",
+      "title": "A Year of Positive Thinking for Teens",
+      "author": "Katie Hurley",
+      "meetings": "November 12 and 26",
+      "time": "5:00 PM",
+      "imageKey": "positive-thinking"
+    },
+    {
+      "month": "December 2026",
+      "title": "What Do You Really Want? How to Set a Goal and Go for It!",
+      "author": "Beverly K. Bachel",
+      "meetings": "December 3 and 23",
+      "time": "5:00 PM",
+      "imageKey": "what-do-you-really-want"
+    }
+  ]
+}

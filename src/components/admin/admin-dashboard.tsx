@@ -1,0 +1,263 @@
+'use client';
+
+import Link from 'next/link';
+import { useState } from 'react';
+import { BarChart3, BookText, ChevronRight, LayoutDashboard, Menu, Sparkles, X } from 'lucide-react';
+
+import type { SiteContent } from '@/lib/site-content';
+import type { AnalyticsDashboardData } from '@/lib/site-storage';
+
+import { AnalyticsPanel } from './analytics-panel';
+import { CmsPanel } from './cms-panel';
+
+type AdminDashboardProps = {
+  initialContent: SiteContent;
+  initialAnalytics: AnalyticsDashboardData;
+};
+
+type AdminView = 'analytics' | 'cms';
+
+type StatusState = {
+  message: string;
+  error: boolean;
+};
+
+const navigationItems: Array<{
+  id: AdminView;
+  label: string;
+  description: string;
+  icon: typeof BarChart3;
+}> = [
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    description: 'Visits, referrers, and CTA conversion',
+    icon: BarChart3,
+  },
+  {
+    id: 'cms',
+    label: 'CMS',
+    description: 'Landing-page copy and book schedule',
+    icon: BookText,
+  },
+];
+
+export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashboardProps) {
+  const [activeView, setActiveView] = useState<AdminView>('analytics');
+  const [content, setContent] = useState(initialContent);
+  const [savedContent, setSavedContent] = useState(initialContent);
+  const [analytics, setAnalytics] = useState(initialAnalytics);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isRefreshingAnalytics, setIsRefreshingAnalytics] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [status, setStatus] = useState<StatusState>({
+    message: 'Admin is connected to the live content file and analytics routes.',
+    error: false,
+  });
+
+  const hasUnsavedChanges = JSON.stringify(content) !== JSON.stringify(savedContent);
+
+  async function refreshAnalytics() {
+    setIsRefreshingAnalytics(true);
+    setStatus({ message: 'Refreshing analytics data...', error: false });
+
+    try {
+      const response = await fetch('/api/admin/analytics', { cache: 'no-store' });
+
+      if (!response.ok) {
+        throw new Error('Analytics refresh failed.');
+      }
+
+      const nextAnalytics = (await response.json()) as AnalyticsDashboardData;
+      setAnalytics(nextAnalytics);
+      setStatus({ message: 'Analytics refreshed.', error: false });
+    } catch {
+      setStatus({ message: 'Unable to refresh analytics right now.', error: true });
+    } finally {
+      setIsRefreshingAnalytics(false);
+    }
+  }
+
+  async function saveContent() {
+    setIsSaving(true);
+    setStatus({ message: 'Saving content changes...', error: false });
+
+    try {
+      const response = await fetch('/api/admin/content', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(content),
+      });
+
+      if (!response.ok) {
+        throw new Error('Content save failed.');
+      }
+
+      const saved = (await response.json()) as SiteContent;
+      setContent(saved);
+      setSavedContent(saved);
+      setStatus({ message: 'Landing-page content saved.', error: false });
+    } catch {
+      setStatus({ message: 'Unable to save content right now.', error: true });
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  function resetContent() {
+    setContent(savedContent);
+    setStatus({ message: 'Unsaved draft changes were discarded.', error: false });
+  }
+
+  const sidebar = (
+    <aside className="flex h-full flex-col rounded-[32px] bg-slate-900 p-5 text-white shadow-xl">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="rounded-2xl bg-white/10 p-3">
+            <LayoutDashboard className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Teen Book Club</p>
+            <h2 className="text-lg font-semibold">Admin dashboard</h2>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="rounded-full border border-white/10 p-2 text-slate-300 transition hover:border-white/20 hover:text-white md:hidden"
+          onClick={() => setIsMobileSidebarOpen(false)}
+          aria-label="Close admin navigation"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Live snapshot</p>
+        <div className="mt-4 grid gap-3">
+          <div className="rounded-2xl bg-white/5 px-4 py-3">
+            <p className="text-xs text-slate-400">Total visits</p>
+            <p className="mt-1 text-2xl font-semibold">{analytics.summary.totalVisits}</p>
+          </div>
+          <div className="rounded-2xl bg-white/5 px-4 py-3">
+            <p className="text-xs text-slate-400">Books managed</p>
+            <p className="mt-1 text-2xl font-semibold">{content.books.length}</p>
+          </div>
+        </div>
+      </div>
+
+      <nav className="mt-8 space-y-2">
+        {navigationItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeView === item.id;
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => {
+                setActiveView(item.id);
+                setIsMobileSidebarOpen(false);
+              }}
+              className={`flex w-full items-center justify-between rounded-[22px] px-4 py-4 text-left transition ${
+                isActive ? 'bg-white text-slate-900 shadow-sm' : 'bg-transparent text-slate-300 hover:bg-white/5'
+              }`}
+            >
+              <div className="flex items-start gap-3">
+                <div className={`rounded-2xl p-2 ${isActive ? 'bg-slate-100 text-slate-900' : 'bg-white/10 text-white'}`}>
+                  <Icon className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="font-medium">{item.label}</p>
+                  <p className={`mt-1 text-xs ${isActive ? 'text-slate-500' : 'text-slate-400'}`}>{item.description}</p>
+                </div>
+              </div>
+              <ChevronRight className={`h-4 w-4 ${isActive ? 'text-slate-400' : 'text-slate-500'}`} />
+            </button>
+          );
+        })}
+      </nav>
+
+      <div className="mt-auto space-y-3">
+        <Link
+          href="/"
+          className="flex items-center justify-between rounded-[22px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/10"
+        >
+          <span>Open public site</span>
+          <ChevronRight className="h-4 w-4" />
+        </Link>
+
+        <div className="rounded-[22px] border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-100">
+          <div className="flex items-center gap-2 font-medium">
+            <Sparkles className="h-4 w-4" />
+            Future-ready routing
+          </div>
+          <p className="mt-2 text-xs leading-5 text-emerald-50/80">
+            Analytics and CMS both run through Next route handlers, so the move to a real serverless data backend stays
+            isolated to the storage layer.
+          </p>
+        </div>
+      </div>
+    </aside>
+  );
+
+  return (
+    <main className="min-h-screen bg-slate-100 text-slate-900">
+      <div className="mx-auto max-w-[1600px] px-4 py-4 md:px-6 md:py-6">
+        <header className="mb-6 flex items-center justify-between rounded-[28px] border border-slate-200 bg-white px-5 py-4 shadow-sm md:hidden">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Teen Book Club</p>
+            <h1 className="text-lg font-semibold text-slate-900">Admin dashboard</h1>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsMobileSidebarOpen(true)}
+            className="rounded-full border border-slate-200 p-2 text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            aria-label="Open admin navigation"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </header>
+
+        <div className="flex gap-6">
+          <div className="sticky top-6 hidden h-[calc(100vh-3rem)] w-[300px] md:block">{sidebar}</div>
+
+          <div className="min-w-0 flex-1 space-y-6">
+            <div
+              className={`rounded-[24px] border px-5 py-4 text-sm shadow-sm ${
+                status.error ? 'border-red-200 bg-red-50 text-red-600' : 'border-slate-200 bg-white text-slate-600'
+              }`}
+            >
+              {status.message}
+            </div>
+
+            {activeView === 'analytics' ? (
+              <AnalyticsPanel
+                analytics={analytics}
+                isRefreshing={isRefreshingAnalytics}
+                onRefresh={refreshAnalytics}
+              />
+            ) : (
+              <CmsPanel
+                content={content}
+                setContent={setContent}
+                hasUnsavedChanges={hasUnsavedChanges}
+                isSaving={isSaving}
+                onReset={resetContent}
+                onSave={saveContent}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {isMobileSidebarOpen ? (
+        <div className="fixed inset-0 z-50 bg-slate-950/50 p-4 md:hidden">
+          <div className="h-full max-w-sm">{sidebar}</div>
+        </div>
+      ) : null}
+    </main>
+  );
+}
