@@ -74,12 +74,12 @@ export function CmsPanel({
     }));
   }
 
-  function updateFooterBanner(value: string) {
+  function updateContact(field: keyof SiteContent['contact'], value: string) {
     setContent((current) => ({
       ...current,
-      footer: {
-        ...current.footer,
-        bannerText: value,
+      contact: {
+        ...current.contact,
+        [field]: value,
       },
     }));
   }
@@ -187,42 +187,34 @@ export function CmsPanel({
 
   return (
     <section className="space-y-6">
-      <div className={sectionCardClass}>
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="sticky top-0 z-30 -mx-1 rounded-[28px] border border-slate-200 bg-white/95 p-8 shadow-lg backdrop-blur-sm">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-slate-400">CMS</p>
-            <h1 className="mt-2 text-3xl font-semibold text-slate-900">Landing page editor</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-              Edit the live landing-page copy and the monthly reading schedule from one place. Changes are saved into
-              the project content file, so they flow directly into the public site.
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-accent)]">CMS</p>
+            <h1 className="mt-2 text-3xl font-black text-[var(--color-ink)]">Content Editor</h1>
+            <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-500">
+              Manage the landing page copy, pricing details, and the monthly reading schedule.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-            >
-              <ExternalLink className="h-4 w-4" />
-              View public site
-            </Link>
             <button
               type="button"
               onClick={onReset}
               disabled={!hasUnsavedChanges || isSaving}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-6 py-2.5 text-xs font-black uppercase tracking-widest text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <RotateCcw className="h-4 w-4" />
-              Reset draft
+              <RotateCcw className="h-3.5 w-3.5" />
+              Reset
             </button>
             <button
               type="button"
               onClick={() => void onSave()}
               disabled={!hasUnsavedChanges || isSaving}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-8 py-2.5 text-xs font-black uppercase tracking-widest text-white transition hover:bg-[var(--color-accent-hover)] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Save className="h-4 w-4" />
-              {isSaving ? 'Saving...' : 'Save changes'}
+              <Save className="h-3.5 w-3.5" />
+              {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </div>
@@ -230,20 +222,20 @@ export function CmsPanel({
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)]">
         <div className="space-y-6">
-          <article className={sectionCardClass}>
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-slate-100 p-3 text-slate-600">
-                <FilePenLine className="h-5 w-5" />
+          <article className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-sm">
+            <div className="flex items-center gap-4">
+              <div className="rounded-2xl bg-[var(--color-ink)]/5 p-3 text-[var(--color-ink)]">
+                <FilePenLine className="h-6 w-6" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">Hero and community</h2>
-                <p className="text-sm text-slate-500">The lead message visitors see before they browse the books.</p>
+                <h2 className="text-xl font-black text-[var(--color-ink)]">Hero & Community</h2>
+                <p className="text-sm font-medium text-slate-500">Primary messaging for the top section.</p>
               </div>
             </div>
 
-            <div className="mt-6 grid gap-4">
+            <div className="mt-8 grid gap-6">
               <label className="grid gap-2">
-                <span className={labelClass}>Hero title</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Hero Title</span>
                 <input
                   value={content.hero.title}
                   onChange={(event) => updateHero('title', event.target.value)}
@@ -251,15 +243,15 @@ export function CmsPanel({
                 />
               </label>
               <label className="grid gap-2">
-                <span className={labelClass}>Hero description</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Description</span>
                 <textarea
                   value={content.hero.description}
                   onChange={(event) => updateHero('description', event.target.value)}
-                  className={`${inputClass} min-h-[140px] resize-y`}
+                  className={`${inputClass} min-h-[120px] resize-y`}
                 />
               </label>
               <label className="grid gap-2">
-                <span className={labelClass}>Community label</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Community Label</span>
                 <input
                   value={content.hero.communityLabel}
                   onChange={(event) => updateHero('communityLabel', event.target.value)}
@@ -269,13 +261,13 @@ export function CmsPanel({
             </div>
           </article>
 
-          <article className={sectionCardClass}>
-            <h2 className="text-xl font-semibold text-slate-900">Pricing and call to action</h2>
-            <p className="mt-1 text-sm text-slate-500">Manage the membership offer and the primary join button.</p>
+          <article className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-black text-[var(--color-ink)]">Pricing & CTA</h2>
+            <p className="mt-1 text-sm font-medium text-slate-500">Membership offer and join button.</p>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
               <label className="grid gap-2">
-                <span className={labelClass}>Monthly amount</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Monthly Amount</span>
                 <input
                   value={content.pricing.amount}
                   onChange={(event) => updatePricing('amount', event.target.value)}
@@ -283,7 +275,7 @@ export function CmsPanel({
                 />
               </label>
               <label className="grid gap-2">
-                <span className={labelClass}>Interval label</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Interval Label</span>
                 <input
                   value={content.pricing.intervalLabel}
                   onChange={(event) => updatePricing('intervalLabel', event.target.value)}
@@ -291,7 +283,7 @@ export function CmsPanel({
                 />
               </label>
               <label className="grid gap-2">
-                <span className={labelClass}>CTA label</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">CTA Label</span>
                 <input
                   value={content.pricing.ctaLabel}
                   onChange={(event) => updatePricing('ctaLabel', event.target.value)}
@@ -299,7 +291,7 @@ export function CmsPanel({
                 />
               </label>
               <label className="grid gap-2">
-                <span className={labelClass}>CTA URL</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Stripe URL</span>
                 <input
                   value={content.pricing.ctaHref}
                   onChange={(event) => updatePricing('ctaHref', event.target.value)}
@@ -307,7 +299,7 @@ export function CmsPanel({
                 />
               </label>
               <label className="grid gap-2 md:col-span-2">
-                <span className={labelClass}>Helper text</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Helper Text</span>
                 <input
                   value={content.pricing.helperText}
                   onChange={(event) => updatePricing('helperText', event.target.value)}
@@ -317,14 +309,14 @@ export function CmsPanel({
             </div>
           </article>
 
-          <article className={sectionCardClass}>
-            <h2 className="text-xl font-semibold text-slate-900">Schedule and footer copy</h2>
-            <p className="mt-1 text-sm text-slate-500">Control the section labels and the footer highlights.</p>
+          <article className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-black text-[var(--color-ink)]">Schedule & Contact</h2>
+            <p className="mt-1 text-sm font-medium text-slate-500">Section labels and contact information.</p>
 
-            <div className="mt-6 grid gap-4">
-              <div className="grid gap-4 md:grid-cols-2">
+            <div className="mt-8 grid gap-6">
+              <div className="grid gap-6 md:grid-cols-2">
                 <label className="grid gap-2">
-                  <span className={labelClass}>Eyebrow</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Eyebrow</span>
                   <input
                     value={content.schedule.eyebrow}
                     onChange={(event) => updateSchedule('eyebrow', event.target.value)}
@@ -332,7 +324,7 @@ export function CmsPanel({
                   />
                 </label>
                 <label className="grid gap-2">
-                  <span className={labelClass}>Schedule title</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Schedule Title</span>
                   <input
                     value={content.schedule.title}
                     onChange={(event) => updateSchedule('title', event.target.value)}
@@ -342,7 +334,7 @@ export function CmsPanel({
               </div>
 
               <label className="grid gap-2">
-                <span className={labelClass}>Schedule description</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Description</span>
                 <textarea
                   value={content.schedule.description}
                   onChange={(event) => updateSchedule('description', event.target.value)}
@@ -350,9 +342,9 @@ export function CmsPanel({
                 />
               </label>
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2">
                 <label className="grid gap-2">
-                  <span className={labelClass}>Gallery title</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Gallery Title</span>
                   <input
                     value={content.schedule.galleryTitle}
                     onChange={(event) => updateSchedule('galleryTitle', event.target.value)}
@@ -360,7 +352,7 @@ export function CmsPanel({
                   />
                 </label>
                 <label className="grid gap-2">
-                  <span className={labelClass}>Gallery description</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Gallery Subtitle</span>
                   <input
                     value={content.schedule.galleryDescription}
                     onChange={(event) => updateSchedule('galleryDescription', event.target.value)}
@@ -369,142 +361,174 @@ export function CmsPanel({
                 </label>
               </div>
 
-              <label className="grid gap-2">
-                <span className={labelClass}>Footer banner</span>
-                <input
-                  value={content.footer.bannerText}
-                  onChange={(event) => updateFooterBanner(event.target.value)}
-                  className={inputClass}
-                />
-              </label>
+              <div className="grid gap-6 md:grid-cols-2">
+                <label className="grid gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Phone Number</span>
+                  <input
+                    value={content.contact.phone}
+                    onChange={(event) => updateContact('phone', event.target.value)}
+                    className={inputClass}
+                  />
+                </label>
+                <label className="grid gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Location</span>
+                  <input
+                    value={content.contact.location}
+                    onChange={(event) => updateContact('location', event.target.value)}
+                    className={inputClass}
+                  />
+                </label>
+              </div>
 
-              <div className="space-y-3">
+              <div className="grid gap-6 md:grid-cols-2">
+                <label className="grid gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Email Display</span>
+                  <input
+                    value={content.contact.email}
+                    onChange={(event) => updateContact('email', event.target.value)}
+                    className={inputClass}
+                  />
+                </label>
+                <label className="grid gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Mailto URL</span>
+                  <input
+                    value={content.contact.emailHref}
+                    onChange={(event) => updateContact('emailHref', event.target.value)}
+                    className={inputClass}
+                  />
+                </label>
+              </div>
+
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className={labelClass}>Highlight chips</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Highlight Chips</span>
                   <button
                     type="button"
                     onClick={addHighlightItem}
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
                   >
-                    <Plus className="h-3.5 w-3.5" />
-                    Add highlight
+                    <Plus className="h-3 w-3" />
+                    Add Item
                   </button>
                 </div>
 
-                {content.footer.highlightItems.map((item, index) => (
-                  <div key={`${item}-${index}`} className="flex gap-3">
-                    <input
-                      value={item}
-                      onChange={(event) => updateHighlightItem(index, event.target.value)}
-                      className={inputClass}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeHighlightItem(index)}
-                      className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 text-slate-500 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500"
-                      aria-label={`Remove highlight ${index + 1}`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
+                <div className="grid gap-3">
+                  {content.footer.highlightItems.map((item, index) => (
+                    <div key={`${item}-${index}`} className="flex gap-3">
+                      <input
+                        value={item}
+                        onChange={(event) => updateHighlightItem(index, event.target.value)}
+                        className={inputClass}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeHighlightItem(index)}
+                        className="inline-flex items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 px-4 text-slate-400 transition hover:border-red-100 hover:bg-red-50 hover:text-red-500"
+                        aria-label={`Remove highlight ${index + 1}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </article>
         </div>
 
         <div className="space-y-6">
-          <article className={sectionCardClass}>
-            <h2 className="text-xl font-semibold text-slate-900">Live preview snapshot</h2>
-            <p className="mt-1 text-sm text-slate-500">A quick read on what will appear on the public page.</p>
+          <article className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-sm">
+            <h2 className="text-xl font-black text-[var(--color-ink)]">Live Preview</h2>
+            <p className="mt-1 text-sm font-medium text-slate-500">Visual snapshot of the live site.</p>
 
-            <div className="mt-6 rounded-[28px] bg-[#0e1f3e] p-6 text-[#f7e0e0] shadow-inner">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f0a3a3]">
+            <div className="mt-8 rounded-[28px] border border-slate-100 bg-white p-8 text-slate-900 shadow-inner">
+              <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-accent)]">
                 {content.schedule.eyebrow}
               </p>
-              <h3 className="mt-3 text-3xl font-black tracking-tight">{content.hero.title}</h3>
-              <p className="mt-4 max-w-md text-sm leading-6 text-[#f7e0e0]/80">{content.hero.description}</p>
+              <h3 className="mt-3 text-3xl font-black tracking-tight text-[var(--color-ink)]">{content.hero.title}</h3>
+              <p className="mt-4 max-w-md text-sm font-medium leading-relaxed text-slate-500">{content.hero.description}</p>
 
-              <div className="mt-6 inline-flex items-end gap-2 rounded-2xl bg-white/10 px-5 py-4">
-                <span className="text-3xl font-black">${content.pricing.amount}</span>
-                <span className="pb-1 text-sm font-semibold text-[#f7e0e0]/80">{content.pricing.intervalLabel}</span>
+              <div className="mt-8 inline-flex items-baseline gap-2 rounded-2xl bg-slate-50 px-6 py-4">
+                <span className="text-xl font-black text-[var(--color-ink)]">$</span>
+                <span className="text-4xl font-black tracking-tighter text-[var(--color-ink)]">{content.pricing.amount}</span>
+                <span className="text-sm font-bold text-slate-400">{content.pricing.intervalLabel}</span>
               </div>
 
-              <div className="mt-6 inline-flex rounded-full bg-[#ca3433] px-5 py-3 text-sm font-bold text-white">
+              <div className="mt-8 block rounded-full bg-[var(--color-accent)] px-6 py-4 text-center text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
                 {content.pricing.ctaLabel}
               </div>
             </div>
           </article>
 
-          <article className={sectionCardClass}>
+          <article className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">Books manager</h2>
-                <p className="mt-1 text-sm text-slate-500">
-                  Edit titles, schedule details, and cover selections like a compact WordPress collection editor.
-                </p>
+                <h2 className="text-xl font-black text-[var(--color-ink)]">Books Manager</h2>
+                <p className="mt-1 text-sm font-medium text-slate-500">Edit monthly selections.</p>
               </div>
 
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => moveSelectedBook(-1)}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                  className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50"
+                  title="Move Up"
                 >
-                  <ArrowUp className="h-3.5 w-3.5" />
-                  Move up
+                  <ArrowUp className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => moveSelectedBook(1)}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                  className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50"
+                  title="Move Down"
                 >
-                  <ArrowDown className="h-3.5 w-3.5" />
-                  Move down
+                  <ArrowDown className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={addBook}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[var(--color-ink)]/90"
                 >
                   <Plus className="h-3.5 w-3.5" />
-                  Add book
+                  Add
                 </button>
                 <button
                   type="button"
                   onClick={removeSelectedBook}
                   disabled={content.books.length <= 1}
-                  className="inline-flex items-center gap-2 rounded-full border border-red-100 px-3 py-2 text-xs font-medium text-red-500 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-full border border-red-100 p-2 text-red-500 transition hover:bg-red-50 disabled:opacity-30"
+                  title="Remove Book"
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  Remove
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
               <div className="space-y-2">
                 {content.books.map((book, index) => (
                   <button
                     key={`${book.month}-${book.title}-${index}`}
                     type="button"
                     onClick={() => setSelectedBookIndex(index)}
-                    className={`w-full rounded-2xl border px-4 py-3 text-left transition ${
+                    className={`w-full rounded-2xl border px-5 py-4 text-left transition ${
                       selectedBookIndex === index
-                        ? 'border-slate-900 bg-slate-900 text-white'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-white'
+                        ? 'border-[var(--color-accent)] bg-[var(--color-accent)] text-white shadow-lg'
+                        : 'border-slate-100 bg-slate-50/50 text-slate-600 hover:border-slate-200 hover:bg-white'
                     }`}
                   >
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">{book.month}</p>
-                    <p className="mt-2 font-semibold">{book.title}</p>
+                    <p className={`text-[9px] font-black uppercase tracking-widest ${selectedBookIndex === index ? 'text-white/70' : 'text-slate-400'}`}>
+                      {book.month}
+                    </p>
+                    <p className="mt-1.5 font-bold leading-tight line-clamp-1">{book.title}</p>
                   </button>
                 ))}
               </div>
 
               {selectedBook ? (
-                <div className="space-y-4">
+                <div className="space-y-5 rounded-2xl bg-slate-50/50 p-6">
                   <label className="grid gap-2">
-                    <span className={labelClass}>Month label</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Month</span>
                     <input
                       value={selectedBook.month}
                       onChange={(event) => updateSelectedBook('month', event.target.value)}
@@ -512,7 +536,7 @@ export function CmsPanel({
                     />
                   </label>
                   <label className="grid gap-2">
-                    <span className={labelClass}>Book title</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Title</span>
                     <input
                       value={selectedBook.title}
                       onChange={(event) => updateSelectedBook('title', event.target.value)}
@@ -520,7 +544,7 @@ export function CmsPanel({
                     />
                   </label>
                   <label className="grid gap-2">
-                    <span className={labelClass}>Author</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Author</span>
                     <input
                       value={selectedBook.author}
                       onChange={(event) => updateSelectedBook('author', event.target.value)}
@@ -529,7 +553,7 @@ export function CmsPanel({
                   </label>
                   <div className="grid gap-4 md:grid-cols-2">
                     <label className="grid gap-2">
-                      <span className={labelClass}>Meetings</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Meetings</span>
                       <input
                         value={selectedBook.meetings}
                         onChange={(event) => updateSelectedBook('meetings', event.target.value)}
@@ -537,7 +561,7 @@ export function CmsPanel({
                       />
                     </label>
                     <label className="grid gap-2">
-                      <span className={labelClass}>Time</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Time</span>
                       <input
                         value={selectedBook.time}
                         onChange={(event) => updateSelectedBook('time', event.target.value)}
@@ -546,7 +570,7 @@ export function CmsPanel({
                     </label>
                   </div>
                   <label className="grid gap-2">
-                    <span className={labelClass}>Cover image</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Cover</span>
                     <select
                       value={selectedBook.imageKey}
                       onChange={(event) => updateSelectedBook('imageKey', event.target.value)}

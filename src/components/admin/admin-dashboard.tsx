@@ -112,21 +112,21 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
   }
 
   const sidebar = (
-    <aside className="flex h-full flex-col rounded-[32px] bg-slate-900 p-5 text-white shadow-xl">
+    <aside className="flex h-full flex-col rounded-[32px] bg-[var(--color-ink)] p-5 text-white shadow-xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="rounded-2xl bg-white/10 p-3">
-            <LayoutDashboard className="h-5 w-5" />
+            <LayoutDashboard className="h-5 w-5 text-[var(--color-accent)]" />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Teen Book Club</p>
-            <h2 className="text-lg font-semibold">Admin dashboard</h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-white/40">Exceed Learning</p>
+            <h2 className="text-lg font-black tracking-tight">Admin Panel</h2>
           </div>
         </div>
 
         <button
           type="button"
-          className="rounded-full border border-white/10 p-2 text-slate-300 transition hover:border-white/20 hover:text-white md:hidden"
+          className="rounded-full border border-white/10 p-2 text-white/60 transition hover:border-white/20 hover:text-white md:hidden"
           onClick={() => setIsMobileSidebarOpen(false)}
           aria-label="Close admin navigation"
         >
@@ -135,15 +135,15 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
       </div>
 
       <div className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Live snapshot</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.28em] text-white/40">Quick Stats</p>
         <div className="mt-4 grid gap-3">
           <div className="rounded-2xl bg-white/5 px-4 py-3">
-            <p className="text-xs text-slate-400">Total visits</p>
-            <p className="mt-1 text-2xl font-semibold">{analytics.summary.totalVisits}</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Visits</p>
+            <p className="mt-1 text-2xl font-black">{analytics.summary.totalVisits}</p>
           </div>
           <div className="rounded-2xl bg-white/5 px-4 py-3">
-            <p className="text-xs text-slate-400">Books managed</p>
-            <p className="mt-1 text-2xl font-semibold">{content.books.length}</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Books</p>
+            <p className="mt-1 text-2xl font-black">{content.books.length}</p>
           </div>
         </div>
       </div>
@@ -162,19 +162,19 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
                 setIsMobileSidebarOpen(false);
               }}
               className={`flex w-full items-center justify-between rounded-[22px] px-4 py-4 text-left transition ${
-                isActive ? 'bg-white text-slate-900 shadow-sm' : 'bg-transparent text-slate-300 hover:bg-white/5'
+                isActive ? 'bg-white text-[var(--color-ink)] shadow-sm' : 'bg-transparent text-white/70 hover:bg-white/5 hover:text-white'
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className={`rounded-2xl p-2 ${isActive ? 'bg-slate-100 text-slate-900' : 'bg-white/10 text-white'}`}>
+                <div className={`rounded-2xl p-2 ${isActive ? 'bg-[var(--color-accent)] text-white' : 'bg-white/10 text-white'}`}>
                   <Icon className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="font-medium">{item.label}</p>
-                  <p className={`mt-1 text-xs ${isActive ? 'text-slate-500' : 'text-slate-400'}`}>{item.description}</p>
+                  <p className="text-sm font-black uppercase tracking-widest">{item.label}</p>
+                  <p className={`mt-0.5 text-[10px] font-bold ${isActive ? 'text-[var(--color-ink)]/50' : 'text-white/40'}`}>{item.description}</p>
                 </div>
               </div>
-              <ChevronRight className={`h-4 w-4 ${isActive ? 'text-slate-400' : 'text-slate-500'}`} />
+              <ChevronRight className={`h-4 w-4 ${isActive ? 'text-[var(--color-ink)]/30' : 'text-white/20'}`} />
             </button>
           );
         })}
@@ -183,20 +183,19 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
       <div className="mt-auto space-y-3">
         <Link
           href="/"
-          className="flex items-center justify-between rounded-[22px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/10"
+          className="flex items-center justify-between rounded-[22px] border border-white/10 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-white/10 hover:-translate-y-0.5"
         >
-          <span>Open public site</span>
-          <ChevronRight className="h-4 w-4" />
+          <span>View Site</span>
+          <ChevronRight className="h-4 w-4 text-[var(--color-accent)]" />
         </Link>
 
-        <div className="rounded-[22px] border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-100">
-          <div className="flex items-center gap-2 font-medium">
-            <Sparkles className="h-4 w-4" />
-            Future-ready routing
+        <div className="rounded-[22px] border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 p-4 text-xs">
+          <div className="flex items-center gap-2 font-black uppercase tracking-widest text-white">
+            <Sparkles className="h-4 w-4 text-[var(--color-accent)]" />
+            Live Sync
           </div>
-          <p className="mt-2 text-xs leading-5 text-emerald-50/80">
-            Analytics and CMS both run through Next route handlers, so the move to a real serverless data backend stays
-            isolated to the storage layer.
+          <p className="mt-2 text-[10px] font-medium leading-relaxed text-white/60">
+            Changes save directly to the site content. Analytics update in real-time.
           </p>
         </div>
       </div>
@@ -204,12 +203,12 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
   );
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900">
+    <main className="min-h-screen bg-[#f8fafc] text-[var(--color-ink)]">
       <div className="mx-auto max-w-[1600px] px-4 py-4 md:px-6 md:py-6">
         <header className="mb-6 flex items-center justify-between rounded-[28px] border border-slate-200 bg-white px-5 py-4 shadow-sm md:hidden">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Teen Book Club</p>
-            <h1 className="text-lg font-semibold text-slate-900">Admin dashboard</h1>
+            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-slate-400">Exceed Learning</p>
+            <h1 className="text-lg font-black text-[var(--color-ink)]">Admin Panel</h1>
           </div>
           <button
             type="button"
@@ -226,10 +225,11 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
 
           <div className="min-w-0 flex-1 space-y-6">
             <div
-              className={`rounded-[24px] border px-5 py-4 text-sm shadow-sm ${
-                status.error ? 'border-red-200 bg-red-50 text-red-600' : 'border-slate-200 bg-white text-slate-600'
+              className={`rounded-[24px] border px-6 py-4 text-xs font-bold shadow-sm ${
+                status.error ? 'border-red-200 bg-red-50 text-red-600' : 'border-slate-200 bg-white text-slate-500'
               }`}
             >
+              <span className="mr-2 inline-block h-2 w-2 rounded-full bg-current opacity-50" />
               {status.message}
             </div>
 

@@ -1,13 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-ink: #0e1f3e;
-  --color-accent: #ca3433;
-  --color-cream: #f7e0e0;
+  --color-ink: #0a1c3b;
+  --color-accent: #c2272d;
+  --color-accent-hover: #a51f25;
+  --color-light-bg: #fcfcfc;
+  --color-gray-text: #666666;
+  --color-cream: #ffffff;
 }
 
 * {
@@ -20,9 +23,13 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-ink);
-  color: var(--color-cream);
-  font-family: 'Poppins', sans-serif;
+  background: var(--color-light-bg);
+  color: var(--color-ink);
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
 }
 
 @layer utilities {

@@ -30,8 +30,13 @@ export type SiteContent = {
     galleryDescription: string;
   };
   footer: {
-    bannerText: string;
     highlightItems: string[];
+  };
+  contact: {
+    phone: string;
+    location: string;
+    email: string;
+    emailHref: string;
   };
   books: SiteBook[];
 };
@@ -58,8 +63,13 @@ export const defaultSiteContent: SiteContent = {
     galleryDescription: 'Click on any current book to see the meeting details.',
   },
   footer: {
-    bannerText: 'Most meetings start at 5:00 PM | August meetings start at 6:00 PM',
     highlightItems: ['Engaging Discussions', 'Strong Community', 'Practical Takeaways'],
+  },
+  contact: {
+    phone: '+1 (516) 226-3114',
+    location: '1360 Willis Ave., Albertson NY 11507',
+    email: 'Email us directly [+]',
+    emailHref: 'mailto:info@exceedlearningcenter.com',
   },
   books: [
     {
@@ -225,6 +235,7 @@ export function normalizeSiteContent(input: unknown): SiteContent {
   const pricingSource = isRecord(input.pricing) ? input.pricing : {};
   const scheduleSource = isRecord(input.schedule) ? input.schedule : {};
   const footerSource = isRecord(input.footer) ? input.footer : {};
+  const contactSource = isRecord(input.contact) ? input.contact : {};
   const booksSource = Array.isArray(input.books) && input.books.length > 0 ? input.books : defaultSiteContent.books;
 
   return {
@@ -251,12 +262,17 @@ export function normalizeSiteContent(input: unknown): SiteContent {
       ),
     },
     footer: {
-      bannerText: readString(footerSource.bannerText, defaultSiteContent.footer.bannerText),
       highlightItems: Array.isArray(footerSource.highlightItems) && footerSource.highlightItems.length > 0
         ? footerSource.highlightItems
             .map((item, index) => readString(item, defaultSiteContent.footer.highlightItems[index] ?? 'New highlight'))
             .slice(0, 6)
         : defaultSiteContent.footer.highlightItems,
+    },
+    contact: {
+      phone: readString(contactSource.phone, defaultSiteContent.contact.phone),
+      location: readString(contactSource.location, defaultSiteContent.contact.location),
+      email: readString(contactSource.email, defaultSiteContent.contact.email),
+      emailHref: readString(contactSource.emailHref, defaultSiteContent.contact.emailHref),
     },
     books: booksSource.map((book, index) =>
       normalizeBook(book, defaultSiteContent.books[index] ?? defaultSiteContent.books.at(-1)!)
@@ -264,7 +280,7 @@ export function normalizeSiteContent(input: unknown): SiteContent {
   };
 }
 
-export function isMonthPast(monthStr: string, referenceDate: Date): boolean {
+export function isMonthPast(monthStr: string, referenceDate: Date, meetings?: string): boolean {
   const [monthName, yearStr] = monthStr.split(' ');
   const monthIndex = MONTH_NAMES.indexOf(monthName);
   const year = Number.parseInt(yearStr, 10);
@@ -277,5 +293,27 @@ export function isMonthPast(monthStr: string, referenceDate: Date): boolean {
     return false;
   }
 
-  return monthIndex < referenceDate.getMonth();
+  // If it's a future month in the same year, it's not past.
+  if (monthIndex > referenceDate.getMonth()) {
+    return false;
+  }
+
+  // If it's a past month in the same year, it's definitely past.
+  if (monthIndex < referenceDate.getMonth()) {
+    return true;
+  }
+
+  // If it's the current month, check the last meeting date if available.
+  if (meetings) {
+    // Extract all numbers from the meetings string (e.g., "March 12 and 26" -> [12, 26])
+    const days = (meetings.match(/\d+/g) || []).map((d) => Number.parseInt(d, 10));
+    if (days.length > 0) {
+      const lastMeetingDay = Math.max(...days);
+      // It's past if today is after the last meeting day.
+      return referenceDate.getDate() > lastMeetingDay;
+    }
+  }
+
+  // Fallback to month-level precision: it's only past if the month is over.
+  return false;
 }

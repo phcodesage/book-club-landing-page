@@ -19,12 +19,17 @@
     "galleryDescription": "Click on any current book to see the meeting details."
   },
   "footer": {
-    "bannerText": "Most meetings start at 5:00 PM | August meetings start at 6:00 PM",
     "highlightItems": [
       "Engaging Discussions",
       "Strong Community",
       "Practical Takeaways"
     ]
+  },
+  "contact": {
+    "phone": "+1 (516) 226-3114",
+    "location": "1360 Willis Ave., Albertson NY 11507",
+    "email": "Email us directly [+]",
+    "emailHref": "mailto:info@exceedlearningcenter.com"
   },
   "books": [
     {
