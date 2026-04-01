@@ -7,13 +7,21 @@ export type SiteBook = {
   meetings: string;
   time: string;
   imageKey: string;
+  isCompleted?: boolean;
 };
 
 export type SiteContent = {
+  navigation: {
+    logoPath: string;
+  };
   hero: {
     title: string;
     description: string;
     communityLabel: string;
+    backgroundImage: string;
+    communityStats: string;
+    floatingCardTitle: string;
+    floatingCardSubtitle: string;
   };
   pricing: {
     amount: string;
@@ -21,6 +29,7 @@ export type SiteContent = {
     ctaLabel: string;
     ctaHref: string;
     helperText: string;
+    sectionHeading: string;
   };
   schedule: {
     eyebrow: string;
@@ -29,8 +38,13 @@ export type SiteContent = {
     galleryTitle: string;
     galleryDescription: string;
   };
+  modal: {
+    ctaLabel: string;
+    ctaHref: string;
+  };
   footer: {
     highlightItems: string[];
+    copyrightText: string;
   };
   contact: {
     phone: string;
@@ -42,11 +56,18 @@ export type SiteContent = {
 };
 
 export const defaultSiteContent: SiteContent = {
+  navigation: {
+    logoPath: '/logo.png',
+  },
   hero: {
     title: 'TEENS BOOK CLUB',
     description:
       'Connect with fellow readers, gain fresh perspectives, and share how each book relates to your life. It is where great reading helps you ignite your brilliance.',
     communityLabel: 'Join our growing community of readers',
+    backgroundImage: '/site-bg.jpg',
+    communityStats: 'Join 1000+ Members',
+    floatingCardTitle: 'Next Meeting',
+    floatingCardSubtitle: 'Join Our Discussion!',
   },
   pricing: {
     amount: '50',
@@ -54,6 +75,7 @@ export const defaultSiteContent: SiteContent = {
     ctaLabel: 'Join Book Club Now',
     ctaHref: 'https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00',
     helperText: 'Join the teen reading community and reserve your spot.',
+    sectionHeading: 'Join the Club and Ignite Your Brilliance',
   },
   schedule: {
     eyebrow: '2026 Reading List',
@@ -62,14 +84,19 @@ export const defaultSiteContent: SiteContent = {
     galleryTitle: 'Complete 2026 Reading Schedule',
     galleryDescription: 'Click on any current book to see the meeting details.',
   },
+  modal: {
+    ctaLabel: 'Reserve Your Spot',
+    ctaHref: 'https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00',
+  },
   footer: {
     highlightItems: ['Engaging Discussions', 'Strong Community', 'Practical Takeaways'],
+    copyrightText: 'Exceed Learning Center. All rights reserved.',
   },
   contact: {
     phone: '+1 (516) 226-3114',
     location: '1360 Willis Ave., Albertson NY 11507',
-    email: 'Email us directly [+]',
-    emailHref: 'mailto:info@exceedlearningcenter.com',
+    email: 'programs@exceedlearningcenterny.com',
+    emailHref: 'mailto:programs@exceedlearningcenterny.com',
   },
   books: [
     {
@@ -223,6 +250,7 @@ function normalizeBook(book: unknown, fallback: SiteBook): SiteBook {
     meetings: readString(book.meetings, fallback.meetings),
     time: readString(book.time, fallback.time),
     imageKey: isBookImageKey(imageKey) ? imageKey : DEFAULT_BOOK_IMAGE_KEY,
+    isCompleted: typeof book.isCompleted === 'boolean' ? book.isCompleted : fallback.isCompleted ?? false,
   };
 }
 
@@ -231,18 +259,27 @@ export function normalizeSiteContent(input: unknown): SiteContent {
     return defaultSiteContent;
   }
 
+  const navigationSource = isRecord(input.navigation) ? input.navigation : {};
   const heroSource = isRecord(input.hero) ? input.hero : {};
   const pricingSource = isRecord(input.pricing) ? input.pricing : {};
   const scheduleSource = isRecord(input.schedule) ? input.schedule : {};
+  const modalSource = isRecord(input.modal) ? input.modal : {};
   const footerSource = isRecord(input.footer) ? input.footer : {};
   const contactSource = isRecord(input.contact) ? input.contact : {};
   const booksSource = Array.isArray(input.books) && input.books.length > 0 ? input.books : defaultSiteContent.books;
 
   return {
+    navigation: {
+      logoPath: readString(navigationSource.logoPath, defaultSiteContent.navigation.logoPath),
+    },
     hero: {
       title: readString(heroSource.title, defaultSiteContent.hero.title),
       description: readString(heroSource.description, defaultSiteContent.hero.description),
       communityLabel: readString(heroSource.communityLabel, defaultSiteContent.hero.communityLabel),
+      backgroundImage: readString(heroSource.backgroundImage, defaultSiteContent.hero.backgroundImage),
+      communityStats: readString(heroSource.communityStats, defaultSiteContent.hero.communityStats),
+      floatingCardTitle: readString(heroSource.floatingCardTitle, defaultSiteContent.hero.floatingCardTitle),
+      floatingCardSubtitle: readString(heroSource.floatingCardSubtitle, defaultSiteContent.hero.floatingCardSubtitle),
     },
     pricing: {
       amount: readString(pricingSource.amount, defaultSiteContent.pricing.amount),
@@ -250,6 +287,7 @@ export function normalizeSiteContent(input: unknown): SiteContent {
       ctaLabel: readString(pricingSource.ctaLabel, defaultSiteContent.pricing.ctaLabel),
       ctaHref: readString(pricingSource.ctaHref, defaultSiteContent.pricing.ctaHref),
       helperText: readString(pricingSource.helperText, defaultSiteContent.pricing.helperText),
+      sectionHeading: readString(pricingSource.sectionHeading, defaultSiteContent.pricing.sectionHeading),
     },
     schedule: {
       eyebrow: readString(scheduleSource.eyebrow, defaultSiteContent.schedule.eyebrow),
@@ -261,12 +299,17 @@ export function normalizeSiteContent(input: unknown): SiteContent {
         defaultSiteContent.schedule.galleryDescription
       ),
     },
+    modal: {
+      ctaLabel: readString(modalSource.ctaLabel, defaultSiteContent.modal.ctaLabel),
+      ctaHref: readString(modalSource.ctaHref, defaultSiteContent.modal.ctaHref),
+    },
     footer: {
       highlightItems: Array.isArray(footerSource.highlightItems) && footerSource.highlightItems.length > 0
         ? footerSource.highlightItems
             .map((item, index) => readString(item, defaultSiteContent.footer.highlightItems[index] ?? 'New highlight'))
             .slice(0, 6)
         : defaultSiteContent.footer.highlightItems,
+      copyrightText: readString(footerSource.copyrightText, defaultSiteContent.footer.copyrightText),
     },
     contact: {
       phone: readString(contactSource.phone, defaultSiteContent.contact.phone),

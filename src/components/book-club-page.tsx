@@ -23,6 +23,7 @@ type BookCardProps = {
 type BookModalProps = {
   book: SiteBook;
   onClose: () => void;
+  content: SiteContent;
 };
 
 type AnalyticsEventType = 'page_view' | 'cta_click';
@@ -139,7 +140,7 @@ function BookCard({ book, isPast, index, onSelect }: BookCardProps) {
   );
 }
 
-function BookModal({ book, onClose }: BookModalProps) {
+function BookModal({ book, onClose, content }: BookModalProps) {
   const coverImage = getBookImage(book.imageKey);
 
   return (
@@ -215,12 +216,12 @@ function BookModal({ book, onClose }: BookModalProps) {
 
             <div className="mt-10">
               <a
-                href="https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00"
+                href={content.modal.ctaHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block w-full rounded-full bg-[var(--color-accent)] py-4 text-center text-sm font-black uppercase tracking-widest text-white shadow-xl transition-all hover:bg-[var(--color-accent-hover)] hover:-translate-y-1"
               >
-                Reserve Your Spot
+                {content.modal.ctaLabel}
               </a>
             </div>
           </div>
@@ -271,14 +272,24 @@ export function BookClubPage({ content }: BookClubPageProps) {
 
   return (
     <>
-      <Navigation logo="/logo.png" />
+      <Navigation 
+        logo={content.navigation.logoPath} 
+        email={content.contact.email} 
+        emailHref={content.contact.emailHref} 
+      />
       <main className="min-h-screen bg-[var(--color-light-bg)] pt-[104px]">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-[var(--color-ink)] py-20 lg:py-32">
           {/* Abstract Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute -left-20 -top-20 h-96 w-96 rounded-full bg-[var(--color-accent)] blur-3xl" />
-            <div className="absolute -right-20 -bottom-20 h-96 w-96 rounded-full bg-[var(--color-accent)] blur-3xl" />
+          <div className="absolute inset-0">
+            <Image 
+              src={content.hero.backgroundImage} 
+              alt="Hero background" 
+              fill 
+              className="object-cover opacity-10" 
+              sizes="100vw"
+              priority
+            />
           </div>
           
           <div className="container relative z-10 mx-auto max-w-7xl px-4">
@@ -339,7 +350,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
                       </div>
                       <div>
                         <p className="text-[10px] font-black uppercase tracking-widest opacity-70">Community</p>
-                        <p className="text-sm font-bold">Join 1000+ Members</p>
+                        <p className="text-sm font-bold">{content.hero.communityStats}</p>
                       </div>
                     </div>
                   </div>
@@ -351,8 +362,8 @@ export function BookClubPage({ content }: BookClubPageProps) {
                 </div>
                 <div className="absolute -bottom-6 -left-6 hidden h-32 w-48 animate-float items-center justify-center rounded-2xl bg-[var(--color-accent)] p-4 text-white shadow-2xl lg:flex" style={{ animationDelay: '-3s' }}>
                   <div className="text-center">
-                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Next Meeting</p>
-                    <p className="mt-1 text-lg font-black leading-tight">Join Our Discussion!</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80">{content.hero.floatingCardTitle}</p>
+                    <p className="mt-1 text-lg font-black leading-tight">{content.hero.floatingCardSubtitle}</p>
                   </div>
                 </div>
               </div>
@@ -386,7 +397,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
               <div className="relative z-10 flex flex-col items-center justify-between gap-12 lg:flex-row lg:text-left">
                 <div className="max-w-xl text-center lg:text-left">
                   <h3 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                    Join the Club and Ignite Your Brilliance
+                    {content.pricing.sectionHeading}
                   </h3>
                   <p className="mt-4 text-lg font-medium text-[var(--color-gray-text)]">
                     {content.pricing.helperText}
@@ -436,7 +447,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
 
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {content.books.map((book, index) => {
-                const isPast = today ? isMonthPast(book.month, today, book.meetings) : false;
+                const isPast = book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false);
 
                 return (
                   <BookCard
@@ -513,13 +524,13 @@ export function BookClubPage({ content }: BookClubPageProps) {
                 })}
               </div>
               <p className="text-xs font-bold text-gray-400">
-                © {new Date().getFullYear()} Exceed Learning Center. All rights reserved.
+                © {new Date().getFullYear()} {content.footer.copyrightText}
               </p>
             </div>
           </footer>
         </div>
 
-        {selectedBook ? <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} /> : null}
+        {selectedBook ? <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} content={content} /> : null}
       </main>
       <ScrollToTop />
     </>

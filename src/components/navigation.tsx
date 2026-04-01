@@ -8,9 +8,16 @@ import { useState } from 'react';
 type NavigationProps = {
   logo?: StaticImageData | string;
   title?: string;
+  email?: string;
+  emailHref?: string;
 };
 
-export function Navigation({ logo, title = 'Teen Book Club' }: NavigationProps) {
+export function Navigation({ 
+  logo, 
+  title = 'Teen Book Club',
+  email = 'programs@exceedlearningcenterny.com',
+  emailHref = 'mailto:programs@exceedlearningcenterny.com'
+}: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -47,9 +54,9 @@ export function Navigation({ logo, title = 'Teen Book Club' }: NavigationProps) 
               <MapPin className="h-4 w-4 text-[var(--color-accent)]" />
               <span>1360 Willis Ave, Albertson, NY 11507</span>
             </div>
-            <a href="mailto:info@exceedlearningcenter.com" className="flex items-center gap-1.5 transition-colors hover:text-[var(--color-accent)]">
+            <a href={emailHref} className="flex items-center gap-1.5 transition-colors hover:text-[var(--color-accent)]">
               <Mail className="h-4 w-4 text-[var(--color-accent)]" />
-              <span>Email us Directly [+]</span>
+              <span>{email}</span>
             </a>
           </div>
           <div className="flex items-center gap-4">

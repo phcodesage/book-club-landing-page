@@ -1,15 +1,23 @@
 {
+  "navigation": {
+    "logoPath": "/logo.png"
+  },
   "hero": {
     "title": "TEENS BOOK CLUB",
     "description": "Connect with fellow readers, gain fresh perspectives, and share how each book relates to your life. It is where great reading helps you ignite your brilliance.",
-    "communityLabel": "Join our growing community of readers"
+    "communityLabel": "Join our growing community of readers",
+    "backgroundImage": "/site-bg.jpg",
+    "communityStats": "Join 1000+ Members",
+    "floatingCardTitle": "Next Meeting",
+    "floatingCardSubtitle": "Join Our Discussion!"
   },
   "pricing": {
     "amount": "50",
     "intervalLabel": "/ month",
     "ctaLabel": "Join Book Club Now",
     "ctaHref": "https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00",
-    "helperText": "Join the teen reading community and reserve your spot."
+    "helperText": "Join the teen reading community and reserve your spot.",
+    "sectionHeading": "Join the Club and Ignite Your Brilliance"
   },
   "schedule": {
     "eyebrow": "2026 Reading List",
@@ -18,18 +26,23 @@
     "galleryTitle": "Complete 2026 Reading Schedule",
     "galleryDescription": "Click on any current book to see the meeting details."
   },
+  "modal": {
+    "ctaLabel": "Reserve Your Spot",
+    "ctaHref": "https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00"
+  },
   "footer": {
     "highlightItems": [
       "Engaging Discussions",
       "Strong Community",
       "Practical Takeaways"
-    ]
+    ],
+    "copyrightText": "Exceed Learning Center. All rights reserved."
   },
   "contact": {
     "phone": "+1 (516) 226-3114",
     "location": "1360 Willis Ave., Albertson NY 11507",
-    "email": "Email us directly [+]",
-    "emailHref": "mailto:info@exceedlearningcenter.com"
+    "email": "programs@exceedlearningcenterny.com",
+    "emailHref": "mailto:programs@exceedlearningcenterny.com"
   },
   "books": [
     {
@@ -54,7 +67,8 @@
       "author": "Ross Szabo",
       "meetings": "March 12 and 26",
       "time": "5:00 PM",
-      "imageKey": "behind-happy-faces"
+      "imageKey": "behind-happy-faces",
+      "isCompleted": true
     },
     {
       "month": "April 2026",

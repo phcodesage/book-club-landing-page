@@ -2,20 +2,22 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { BarChart3, BookText, ChevronRight, LayoutDashboard, Menu, Sparkles, X } from 'lucide-react';
+import { BarChart3, BookText, ChevronRight, Images, LayoutDashboard, LogOut, Menu, Sparkles, X } from 'lucide-react';
 
 import type { SiteContent } from '@/lib/site-content';
 import type { AnalyticsDashboardData } from '@/lib/site-storage';
 
 import { AnalyticsPanel } from './analytics-panel';
 import { CmsPanel } from './cms-panel';
+import { MediaPanel } from './media-panel';
 
 type AdminDashboardProps = {
   initialContent: SiteContent;
   initialAnalytics: AnalyticsDashboardData;
+  username?: string;
 };
 
-type AdminView = 'analytics' | 'cms';
+type AdminView = 'analytics' | 'cms' | 'media';
 
 type StatusState = {
   message: string;
@@ -40,9 +42,15 @@ const navigationItems: Array<{
     description: 'Landing-page copy and book schedule',
     icon: BookText,
   },
+  {
+    id: 'media',
+    label: 'Media',
+    description: 'All book covers and site images',
+    icon: Images,
+  },
 ];
 
-export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashboardProps) {
+export function AdminDashboard({ initialContent, initialAnalytics, username }: AdminDashboardProps) {
   const [activeView, setActiveView] = useState<AdminView>('analytics');
   const [content, setContent] = useState(initialContent);
   const [savedContent, setSavedContent] = useState(initialContent);
@@ -109,6 +117,11 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
   function resetContent() {
     setContent(savedContent);
     setStatus({ message: 'Unsaved draft changes were discarded.', error: false });
+  }
+
+  async function handleLogout() {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    window.location.href = '/admin/login';
   }
 
   const sidebar = (
@@ -189,6 +202,23 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
           <ChevronRight className="h-4 w-4 text-[var(--color-accent)]" />
         </Link>
 
+        {username && (
+          <div className="flex items-center justify-between rounded-[22px] border border-white/10 bg-white/5 px-4 py-3">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Signed in as</p>
+              <p className="mt-0.5 text-sm font-black text-white">{username}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              title="Sign out"
+              className="rounded-full border border-white/10 p-2 text-white/50 transition hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-400"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
         <div className="rounded-[22px] border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 p-4 text-xs">
           <div className="flex items-center gap-2 font-black uppercase tracking-widest text-white">
             <Sparkles className="h-4 w-4 text-[var(--color-accent)]" />
@@ -239,6 +269,8 @@ export function AdminDashboard({ initialContent, initialAnalytics }: AdminDashbo
                 isRefreshing={isRefreshingAnalytics}
                 onRefresh={refreshAnalytics}
               />
+            ) : activeView === 'media' ? (
+              <MediaPanel />
             ) : (
               <CmsPanel
                 content={content}
