@@ -15,8 +15,8 @@ type NavigationProps = {
 export function Navigation({ 
   logo, 
   title = 'Teen Book Club',
-  email = 'programs@exceedlearningcenterny.com',
-  emailHref = 'mailto:programs@exceedlearningcenterny.com'
+  email = 'teenprograms@exceedlearningcenterny.com',
+  emailHref = 'mailto:teenprograms@exceedlearningcenterny.com'
 }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

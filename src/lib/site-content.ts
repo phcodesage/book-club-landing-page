@@ -95,8 +95,8 @@ export const defaultSiteContent: SiteContent = {
   contact: {
     phone: '+1 (516) 226-3114',
     location: '1360 Willis Ave., Albertson NY 11507',
-    email: 'programs@exceedlearningcenterny.com',
-    emailHref: 'mailto:programs@exceedlearningcenterny.com',
+    email: 'teenprograms@exceedlearningcenterny.com',
+    emailHref: 'mailto:teenprograms@exceedlearningcenterny.com',
   },
   books: [
     {
