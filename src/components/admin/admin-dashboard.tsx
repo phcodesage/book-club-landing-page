@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { BarChart3, BookText, ChevronRight, Images, LayoutDashboard, LogOut, Menu, Sparkles, X } from 'lucide-react';
+import { BarChart3, BookText, ChevronRight, Images, LayoutDashboard, LogOut, Menu, Sparkles, X, CreditCard } from 'lucide-react';
 
 import type { SiteContent } from '@/lib/site-content';
 import type { AnalyticsDashboardData } from '@/lib/site-storage';
@@ -10,6 +10,7 @@ import type { AnalyticsDashboardData } from '@/lib/site-storage';
 import { AnalyticsPanel } from './analytics-panel';
 import { CmsPanel } from './cms-panel';
 import { MediaPanel } from './media-panel';
+import { PaymentsPanel } from './payments-panel';
 
 type AdminDashboardProps = {
   initialContent: SiteContent;
@@ -17,7 +18,7 @@ type AdminDashboardProps = {
   username?: string;
 };
 
-type AdminView = 'analytics' | 'cms' | 'media';
+type AdminView = 'analytics' | 'cms' | 'media' | 'payments';
 
 type StatusState = {
   message: string;
@@ -45,8 +46,14 @@ const navigationItems: Array<{
   {
     id: 'media',
     label: 'Media',
-    description: 'All book covers and site images',
+    description: 'Book covers, references, and site images',
     icon: Images,
+  },
+  {
+    id: 'payments',
+    label: 'Payments',
+    description: 'Zelle payment submissions and verification',
+    icon: CreditCard,
   },
 ];
 
@@ -145,20 +152,6 @@ export function AdminDashboard({ initialContent, initialAnalytics, username }: A
         >
           <X className="h-4 w-4" />
         </button>
-      </div>
-
-      <div className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-4">
-        <p className="text-[10px] font-black uppercase tracking-[0.28em] text-white/40">Quick Stats</p>
-        <div className="mt-4 grid gap-3">
-          <div className="rounded-2xl bg-white/5 px-4 py-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Visits</p>
-            <p className="mt-1 text-2xl font-black">{analytics.summary.totalVisits}</p>
-          </div>
-          <div className="rounded-2xl bg-white/5 px-4 py-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Books</p>
-            <p className="mt-1 text-2xl font-black">{content.books.length}</p>
-          </div>
-        </div>
       </div>
 
       <nav className="mt-8 space-y-2">
@@ -271,6 +264,8 @@ export function AdminDashboard({ initialContent, initialAnalytics, username }: A
               />
             ) : activeView === 'media' ? (
               <MediaPanel />
+            ) : activeView === 'payments' ? (
+              <PaymentsPanel />
             ) : (
               <CmsPanel
                 content={content}

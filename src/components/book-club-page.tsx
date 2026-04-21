@@ -8,6 +8,7 @@ import { getBookImage, siteBg } from '@/lib/book-assets';
 import { isMonthPast, type SiteBook, type SiteContent } from '@/lib/site-content';
 import { Navigation } from './navigation';
 import { ScrollToTop } from './scroll-to-top';
+import PaymentModal, { calcCardPrice } from '../app/PaymentModal';
 
 type BookClubPageProps = {
   content: SiteContent;
@@ -23,6 +24,7 @@ type BookCardProps = {
 type BookModalProps = {
   book: SiteBook;
   onClose: () => void;
+  onRegister: () => void;
   content: SiteContent;
 };
 
@@ -140,7 +142,7 @@ function BookCard({ book, isPast, index, onSelect }: BookCardProps) {
   );
 }
 
-function BookModal({ book, onClose, content }: BookModalProps) {
+function BookModal({ book, onClose, onRegister, content }: BookModalProps) {
   const coverImage = getBookImage(book.imageKey);
 
   return (
@@ -215,14 +217,12 @@ function BookModal({ book, onClose, content }: BookModalProps) {
             </div>
 
             <div className="mt-10">
-              <a
-                href={content.modal.ctaHref}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => { void sendAnalyticsEvent('cta_click'); onRegister(); }}
                 className="inline-block w-full rounded-full bg-[var(--color-accent)] py-4 text-center text-sm font-black uppercase tracking-widest text-white shadow-xl transition-all hover:bg-[var(--color-accent-hover)] hover:-translate-y-1"
               >
                 {content.modal.ctaLabel}
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -235,6 +235,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
   const [selectedBook, setSelectedBook] = useState<SiteBook | null>(null);
   const [today, setToday] = useState<Date | null>(null);
   const hasTrackedVisit = useRef(false);
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   useEffect(() => {
     setToday(new Date());
@@ -272,6 +273,14 @@ export function BookClubPage({ content }: BookClubPageProps) {
 
   return (
     <>
+      <PaymentModal
+        isOpen={paymentModalOpen}
+        onClose={() => setPaymentModalOpen(false)}
+        courseName="Teen Book Club"
+        cashPrice={`$${content.pricing.amount}${content.pricing.intervalLabel}`}
+        cardPrice={calcCardPrice(`$${content.pricing.amount}`)}
+        stripeLink={content.pricing.ctaHref}
+      />
       <Navigation 
         logo={content.navigation.logoPath} 
         email={content.contact.email} 
@@ -314,12 +323,12 @@ export function BookClubPage({ content }: BookClubPageProps) {
                 </p>
 
                 <div className="animate-slide-in mt-12 flex flex-wrap justify-center gap-4 lg:justify-start" style={{ animationDelay: '0.2s' }}>
-                  <a
-                    href={content.pricing.ctaHref}
+                  <button
+                    onClick={() => { void sendAnalyticsEvent('cta_click'); setPaymentModalOpen(true); }}
                     className="rounded-full bg-[var(--color-accent)] px-10 py-4 text-sm font-black uppercase tracking-widest text-white shadow-xl transition-all hover:bg-[var(--color-accent-hover)] hover:shadow-2xl hover:-translate-y-1"
                   >
                     {content.pricing.ctaLabel}
-                  </a>
+                  </button>
                   <button 
                     onClick={() => document.getElementById('reading-list')?.scrollIntoView({ behavior: 'smooth' })}
                     className="rounded-full border-2 border-white/20 px-10 py-4 text-sm font-black uppercase tracking-widest text-white transition-all hover:bg-white/10 hover:border-white/40"
@@ -410,13 +419,12 @@ export function BookClubPage({ content }: BookClubPageProps) {
                     <span className="text-7xl font-black tracking-tighter text-[var(--color-ink)]">{content.pricing.amount}</span>
                     <span className="text-xl font-bold text-gray-400">{content.pricing.intervalLabel}</span>
                   </div>
-                  <a
-                    href={content.pricing.ctaHref}
-                    onClick={() => void sendAnalyticsEvent('cta_click')}
+                  <button
+                    onClick={() => { void sendAnalyticsEvent('cta_click'); setPaymentModalOpen(true); }}
                     className="rounded-full bg-[var(--color-accent)] px-12 py-5 text-sm font-black uppercase tracking-widest text-white shadow-[0_15px_30px_rgba(194,39,45,0.3)] transition-all hover:bg-[var(--color-accent-hover)] hover:shadow-[0_20px_40px_rgba(194,39,45,0.4)] hover:-translate-y-1"
                   >
                     {content.pricing.ctaLabel}
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -530,7 +538,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
           </footer>
         </div>
 
-        {selectedBook ? <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} content={content} /> : null}
+        {selectedBook ? <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onRegister={() => { setSelectedBook(null); setPaymentModalOpen(true); }} content={content} /> : null}
       </main>
       <ScrollToTop />
     </>

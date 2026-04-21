@@ -97,6 +97,13 @@ export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onR
       books: c.books.map((book, i) => (i === selectedBookIndex ? { ...book, [field]: value } : book)),
     }));
   }
+
+  function updateSelectedBookBoolean(field: keyof SiteContent['books'][number], value: boolean) {
+    setContent((c) => ({
+      ...c,
+      books: c.books.map((book, i) => (i === selectedBookIndex ? { ...book, [field]: value } : book)),
+    }));
+  }
   function addBook() {
     setContent((c) => ({
       ...c,
@@ -311,7 +318,7 @@ export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onR
                   <input
                     type="checkbox"
                     checked={selectedBook.isCompleted ?? false}
-                    onChange={(e) => updateSelectedBook('isCompleted', e.target.checked as any)}
+                    onChange={(e) => updateSelectedBookBoolean('isCompleted', e.target.checked)}
                     className="h-5 w-5 rounded border-slate-300 text-[var(--color-accent)] focus:ring-[var(--color-accent)]"
                   />
                   <div className="min-w-0">
@@ -354,7 +361,7 @@ export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onR
           <div className="grid gap-5">
             <label className="grid gap-2">
               <Label>Logo Path</Label>
-              <input value={content.navigation.logoPath} onChange={(e) => updateNavigation('logoPath', e.target.value)} className={inputClass} placeholder="/logo.png" />
+              <input value={content.navigation.logoPath} onChange={(e) => updateNavigation('logoPath', e.target.value)} className={inputClass} placeholder="/exceed-logo.png" />
             </label>
           </div>
         </article>

@@ -19,6 +19,7 @@ type UploadMediaItem = {
   kind: 'upload';
   filename: string;
   url: string;
+  category?: 'reference' | 'general';
 };
 
 type MediaItem = StaticMediaItem | UploadMediaItem;
@@ -42,14 +43,15 @@ const staticMedia: StaticMediaItem[] = [
 ];
 
 export function MediaPanel() {
-  const [uploads, setUploads] = useState<Array<{ filename: string; url: string }>>([]);
+  const [uploads, setUploads] = useState<Array<{ filename: string; url: string; category?: 'reference' | 'general' }>>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'static' | 'uploads'>('all');
+  const [filter, setFilter] = useState<'all' | 'static' | 'uploads' | 'reference'>('all');
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [uploadCategory, setUploadCategory] = useState<'reference' | 'general'>('general');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load uploaded files on mount
@@ -60,14 +62,18 @@ export function MediaPanel() {
   async function fetchUploads() {
     try {
       const res = await fetch('/api/admin/media');
-      const data = (await res.json()) as { files: string[] };
-      setUploads(data.files.map((f) => ({ filename: f, url: `/uploads/${f}` })));
+      const data = (await res.json()) as { files: Array<{ filename: string; category?: 'reference' | 'general' }> };
+      setUploads(data.files.map((f) => ({ 
+        filename: typeof f === 'string' ? f : f.filename, 
+        url: `/uploads/${typeof f === 'string' ? f : f.filename}`,
+        category: typeof f === 'string' ? 'general' : f.category || 'general'
+      })));
     } catch {
       // silently ignore
     }
   }
 
-  async function handleFiles(files: FileList | null) {
+  const handleFiles = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setUploadError(null);
     setIsUploading(true);
@@ -75,6 +81,7 @@ export function MediaPanel() {
     for (const file of Array.from(files)) {
       const form = new FormData();
       form.append('file', file);
+      form.append('category', uploadCategory);
       try {
         const res = await fetch('/api/admin/media', { method: 'POST', body: form });
         const data = (await res.json()) as { filename?: string; url?: string; error?: string };
@@ -88,7 +95,7 @@ export function MediaPanel() {
 
     setIsUploading(false);
     await fetchUploads();
-  }
+  }, [uploadCategory]);
 
   async function handleDelete(filename: string) {
     try {
@@ -116,7 +123,7 @@ export function MediaPanel() {
     e.preventDefault();
     setIsDragging(false);
     void handleFiles(e.dataTransfer.files);
-  }, []);
+  }, [handleFiles]);
 
   const allItems: MediaItem[] = [
     ...staticMedia,
@@ -126,7 +133,9 @@ export function MediaPanel() {
   const filtered =
     filter === 'all' ? allItems :
     filter === 'static' ? allItems.filter((m) => m.kind === 'static') :
-    allItems.filter((m) => m.kind === 'upload');
+    filter === 'uploads' ? allItems.filter((m) => m.kind === 'upload') :
+    filter === 'reference' ? allItems.filter((m) => m.kind === 'upload' && (m as UploadMediaItem).category === 'reference') :
+    allItems;
 
   const selectedStatic: StaticMediaItem | null = selected
     ? (staticMedia.find((m) => m.key === selected) ?? null)
@@ -139,6 +148,7 @@ export function MediaPanel() {
     all: allItems.length,
     static: staticMedia.length,
     uploads: uploads.length,
+    reference: uploads.filter(u => u.category === 'reference').length,
   };
 
   return (
@@ -151,20 +161,36 @@ export function MediaPanel() {
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-accent)]">CMS</p>
             <h1 className="mt-2 text-3xl font-black text-[var(--color-ink)]">Media Library</h1>
             <p className="mt-2 text-sm font-medium text-slate-500">
-              {counts.all} assets &mdash; {counts.static} built-in, {counts.uploads} uploaded.
+              {counts.all} assets &mdash; {counts.static} built-in, {counts.uploads} uploaded ({counts.reference} reference).
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
+            {/* Upload category selector */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs font-bold text-slate-600">Upload as:</label>
+              <select 
+                value={uploadCategory} 
+                onChange={(e) => setUploadCategory(e.target.value as 'reference' | 'general')}
+                className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
+              >
+                <option value="general">General Media</option>
+                <option value="reference">Reference Screenshot</option>
+              </select>
+            </div>
+            
             {/* Filter tabs */}
             <div className="flex gap-1.5">
-              {(['all', 'static', 'uploads'] as const).map((f) => (
+              {(['all', 'static', 'uploads', 'reference'] as const).map((f) => (
                 <button key={f} type="button" onClick={() => setFilter(f)}
                   className={`rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-widest transition ${
                     filter === f
                       ? 'bg-[var(--color-ink)] text-white shadow-sm'
                       : 'border border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
                   }`}>
-                  {f === 'all' ? `All (${counts.all})` : f === 'static' ? `Built-in (${counts.static})` : `Uploads (${counts.uploads})`}
+                  {f === 'all' ? `All (${counts.all})` : 
+                   f === 'static' ? `Built-in (${counts.static})` : 
+                   f === 'uploads' ? `Uploads (${counts.uploads})` :
+                   `Reference (${counts.reference})`}
                 </button>
               ))}
             </div>
@@ -203,10 +229,14 @@ export function MediaPanel() {
             }`}
           >
             <Upload className={`h-5 w-5 ${isDragging ? 'text-[var(--color-accent)]' : 'text-slate-400'}`} />
-            <p className="text-sm font-bold text-slate-500">
-              {isDragging ? 'Drop to upload' : 'Drag & drop images here, or click to browse'}
-            </p>
-            <span className="text-xs text-slate-400">JPEG, PNG, WebP, GIF &mdash; max 5 MB</span>
+            <div className="text-center">
+              <p className="text-sm font-bold text-slate-500">
+                {isDragging ? 'Drop to upload' : 'Drag & drop images here, or click to browse'}
+              </p>
+              <p className="text-xs text-slate-400 mt-1">
+                JPEG, PNG, WebP, GIF &mdash; max 5 MB &mdash; Upload as: <span className="font-semibold">{uploadCategory === 'reference' ? 'Reference Screenshot' : 'General Media'}</span>
+              </p>
+            </div>
           </div>
 
           {/* Media grid */}
@@ -249,9 +279,17 @@ export function MediaPanel() {
                           {isUpload ? item.filename : (item as StaticMediaItem).label}
                         </p>
                         <span className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${
-                          isUpload ? 'bg-blue-50 text-blue-500' : 'bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
+                          isUpload 
+                            ? (item as UploadMediaItem).category === 'reference'
+                              ? 'bg-purple-50 text-purple-500'
+                              : 'bg-blue-50 text-blue-500'
+                            : 'bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
                         }`}>
-                          {isUpload ? 'Uploaded' : (item as StaticMediaItem).type}
+                          {isUpload 
+                            ? (item as UploadMediaItem).category === 'reference' 
+                              ? 'Reference' 
+                              : 'Uploaded'
+                            : (item as StaticMediaItem).type}
                         </span>
                       </div>
                     </button>
@@ -305,9 +343,17 @@ export function MediaPanel() {
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</p>
                   <span className={`mt-1 inline-block rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-widest ${
-                    selectedUpload ? 'bg-blue-50 text-blue-500' : 'bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
+                    selectedUpload 
+                      ? selectedUpload.category === 'reference'
+                        ? 'bg-purple-50 text-purple-500'
+                        : 'bg-blue-50 text-blue-500'
+                      : 'bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
                   }`}>
-                    {selectedUpload ? 'Uploaded' : selectedStatic!.type}
+                    {selectedUpload 
+                      ? selectedUpload.category === 'reference' 
+                        ? 'Reference Screenshot' 
+                        : 'Uploaded Media'
+                      : selectedStatic!.type}
                   </span>
                 </div>
 

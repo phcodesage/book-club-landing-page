@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { BookOpen, Eye, EyeOff, Lock, LogIn, User } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Eye, EyeOff, Lock, LogIn, User, ArrowLeft } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -44,10 +46,27 @@ export default function AdminLoginPage() {
     <main className="flex min-h-screen items-center justify-center bg-[#f8fafc] px-4">
       <div className="w-full max-w-sm">
 
+        {/* Back to Home Button */}
+        <div className="mb-6 flex justify-center">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+        </div>
+
         {/* Logo mark */}
         <div className="mb-8 flex flex-col items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-[var(--color-ink)] shadow-lg">
-            <BookOpen className="h-7 w-7 text-[var(--color-accent)]" />
+          <div className="relative h-16 w-48">
+            <Image 
+              src="/exceed-logo.png" 
+              alt="Exceed Learning Center" 
+              fill 
+              className="object-contain" 
+              priority
+            />
           </div>
           <div className="text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.28em] text-slate-400">Exceed Learning</p>

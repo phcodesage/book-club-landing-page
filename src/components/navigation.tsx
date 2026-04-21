@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, Facebook, Instagram, Linkedin, Mail, MapPin, Phone, X, Youtube, Menu } from 'lucide-react';
+import { BookOpen, Facebook, Instagram, Linkedin, Mail, MapPin, X, Youtube, Menu } from 'lucide-react';
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';

@@ -1,12 +1,12 @@
 {
   "navigation": {
-    "logoPath": "/logo.png"
+    "logoPath": "/exceed-logo.png"
   },
   "hero": {
     "title": "TEENS BOOK CLUB",
     "description": "Connect with fellow readers, gain fresh perspectives, and share how each book relates to your life. It is where great reading helps you ignite your brilliance.",
     "communityLabel": "Join our growing community of readers",
-    "backgroundImage": "/site-bg.jpg",
+    "backgroundImage": "/site-bg.png",
     "communityStats": "Join 1000+ Members",
     "floatingCardTitle": "Next Meeting",
     "floatingCardSubtitle": "Join Our Discussion!"
