@@ -441,27 +441,18 @@ export function BookClubPage({ content }: BookClubPageProps) {
                   {content.schedule.galleryDescription}
                 </p>
               </div>
-              <div className="flex items-center gap-4 text-sm font-bold text-gray-400">
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-[var(--color-accent)]" />
-                  <span>Current</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-gray-200" />
-                  <span>Past Due</span>
-                </div>
-              </div>
             </div>
 
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {content.books.map((book, index) => {
+              {content.books.filter((book) => {
                 const isPast = book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false);
-
+                return !isPast;
+              }).map((book, index) => {
                 return (
                   <BookCard
                     key={`${book.month}-${book.title}-${index}`}
                     book={book}
-                    isPast={isPast}
+                    isPast={false}
                     index={index}
                     onSelect={setSelectedBook}
                   />
