@@ -42,10 +42,17 @@ function Label({ children }: { children: React.ReactNode }) {
 
 export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onReset, onSave }: CmsPanelProps) {
   const [selectedBookIndex, setSelectedBookIndex] = useState(0);
+  const [selectedAdultsBookIndex, setSelectedAdultsBookIndex] = useState(0);
 
   useEffect(() => {
     setSelectedBookIndex((i) => Math.min(i, content.books.length - 1));
   }, [content.books.length]);
+
+  useEffect(() => {
+    const adultsLen = (content.adultsBooks ?? []).length;
+    if (adultsLen === 0) return;
+    setSelectedAdultsBookIndex((i) => Math.min(i, adultsLen - 1));
+  }, [(content.adultsBooks ?? []).length]);
 
   const selectedBook = content.books[selectedBookIndex];
   const coverSrc =
@@ -125,6 +132,58 @@ export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onR
       return { ...c, books };
     });
     setSelectedBookIndex(target);
+  }
+
+  // Adults books helpers
+  const adultsBooks = content.adultsBooks ?? [];
+  const selectedAdultsBook = adultsBooks[selectedAdultsBookIndex];
+  const adultsCoverSrc =
+    bookImageMap[((selectedAdultsBook?.imageKey ?? DEFAULT_BOOK_IMAGE_KEY) as keyof typeof bookImageMap)] ??
+    bookImageMap[DEFAULT_BOOK_IMAGE_KEY];
+
+  function updateSelectedAdultsBook(field: keyof SiteContent['books'][number], value: string) {
+    setContent((c) => ({
+      ...c,
+      adultsBooks: (c.adultsBooks ?? []).map((book, i) =>
+        i === selectedAdultsBookIndex ? { ...book, [field]: value } : book
+      ),
+    }));
+  }
+  function updateSelectedAdultsBookBoolean(field: keyof SiteContent['books'][number], value: boolean) {
+    setContent((c) => ({
+      ...c,
+      adultsBooks: (c.adultsBooks ?? []).map((book, i) =>
+        i === selectedAdultsBookIndex ? { ...book, [field]: value } : book
+      ),
+    }));
+  }
+  function addAdultsBook() {
+    setContent((c) => ({
+      ...c,
+      adultsBooks: [
+        ...(c.adultsBooks ?? []),
+        { month: 'New Month 2026', title: 'New Book Title', author: '', meetings: 'Date TBD', time: '6:00 PM', imageKey: DEFAULT_BOOK_IMAGE_KEY },
+      ],
+    }));
+    setSelectedAdultsBookIndex(adultsBooks.length);
+  }
+  function removeSelectedAdultsBook() {
+    if (adultsBooks.length <= 1) return;
+    setContent((c) => ({
+      ...c,
+      adultsBooks: (c.adultsBooks ?? []).filter((_, i) => i !== selectedAdultsBookIndex),
+    }));
+    setSelectedAdultsBookIndex((i) => Math.max(i - 1, 0));
+  }
+  function moveSelectedAdultsBook(direction: -1 | 1) {
+    const target = selectedAdultsBookIndex + direction;
+    if (target < 0 || target >= adultsBooks.length) return;
+    setContent((c) => {
+      const books = [...(c.adultsBooks ?? [])];
+      [books[selectedAdultsBookIndex], books[target]] = [books[target], books[selectedAdultsBookIndex]];
+      return { ...c, adultsBooks: books };
+    });
+    setSelectedAdultsBookIndex(target);
   }
 
   return (
@@ -341,6 +400,194 @@ export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onR
             </div>
           ) : null}
 
+        </div>
+      </article>
+
+      {/* Adults Books Manager */}
+      <article className="overflow-hidden rounded-[28px] border border-slate-100 bg-white shadow-sm">
+        <div className="flex flex-col gap-4 border-b border-slate-100 px-8 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="rounded-2xl bg-[var(--color-ink)]/5 p-3 text-[var(--color-ink)]">
+              <BookOpen className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-black text-[var(--color-ink)]">Adults Books Manager</h2>
+              <p className="text-sm font-medium text-slate-500">Manage the adult book club reading schedule.</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={() => moveSelectedAdultsBook(-1)} title="Move Up"
+              className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50">
+              <ArrowUp className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => moveSelectedAdultsBook(1)} title="Move Down"
+              className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50">
+              <ArrowDown className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={addAdultsBook}
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white transition hover:bg-[var(--color-ink)]/90">
+              <Plus className="h-3.5 w-3.5" /> Add Book
+            </button>
+            <button type="button" onClick={removeSelectedAdultsBook} disabled={adultsBooks.length <= 1} title="Remove Book"
+              className="rounded-full border border-red-100 p-2 text-red-500 transition hover:bg-red-50 disabled:opacity-30">
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex min-h-[600px] overflow-hidden">
+          {/* Book list */}
+          <div className="w-[200px] shrink-0 overflow-y-auto border-r border-slate-100">
+            <div className="space-y-1 p-3">
+              {adultsBooks.length === 0 ? (
+                <p className="px-3 py-4 text-xs text-slate-400">No books yet. Click &quot;Add Book&quot; to get started.</p>
+              ) : adultsBooks.map((book, index) => {
+                const active = selectedAdultsBookIndex === index;
+                return (
+                  <button
+                    key={`${book.month}-${index}`}
+                    type="button"
+                    onClick={() => setSelectedAdultsBookIndex(index)}
+                    className={`flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left transition ${
+                      active
+                        ? 'border-[var(--color-accent)] bg-[var(--color-accent)] text-white shadow-md'
+                        : 'border-transparent text-slate-700 hover:border-slate-200 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="relative h-10 w-7 shrink-0 overflow-hidden rounded-md shadow-sm">
+                      <Image
+                        src={bookImageMap[book.imageKey as keyof typeof bookImageMap] ?? bookImageMap[DEFAULT_BOOK_IMAGE_KEY]}
+                        alt={book.title}
+                        fill
+                        className="object-cover"
+                        sizes="28px"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className={`text-[9px] font-black uppercase tracking-widest leading-none ${active ? 'text-white/60' : 'text-slate-400'}`}>
+                        {book.month}
+                      </p>
+                      <p className="mt-1 line-clamp-2 text-xs font-bold leading-tight">{book.title}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Cover display + picker */}
+          {selectedAdultsBook ? (
+            <div className="flex w-[260px] shrink-0 flex-col border-r border-slate-100">
+              <div className="relative flex-1 bg-slate-50/80" style={{ minHeight: 300 }}>
+                <Image
+                  src={adultsCoverSrc}
+                  alt={selectedAdultsBook.title}
+                  fill
+                  className="object-contain p-6"
+                  sizes="260px"
+                  priority
+                />
+              </div>
+              <div className="border-t border-slate-100 p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <ImageIcon className="h-3.5 w-3.5 text-slate-400" />
+                  <Label>Choose Cover</Label>
+                </div>
+                <div className="grid grid-cols-5 gap-1.5">
+                  {bookImageOptions.map((option) => {
+                    const isSelected = selectedAdultsBook.imageKey === option.value;
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        title={option.label}
+                        onClick={() => updateSelectedAdultsBook('imageKey', option.value)}
+                        className={`relative aspect-[3/4] overflow-hidden rounded-lg border-2 transition-all ${
+                          isSelected
+                            ? 'border-[var(--color-accent)] shadow-md shadow-[var(--color-accent)]/20'
+                            : 'border-transparent hover:border-slate-300'
+                        }`}
+                      >
+                        <Image
+                          src={bookImageMap[option.value as keyof typeof bookImageMap]}
+                          alt={option.label}
+                          fill
+                          className="object-cover"
+                          sizes="44px"
+                        />
+                        {isSelected && (
+                          <div className="absolute inset-0 flex items-end justify-end bg-[var(--color-accent)]/20 p-1">
+                            <div className="rounded-full bg-[var(--color-accent)] p-0.5">
+                              <Check className="h-2.5 w-2.5 text-white" />
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {/* Fields */}
+          {selectedAdultsBook ? (
+            <div className="min-w-0 flex-1 overflow-y-auto p-8 space-y-5">
+              <div className="pb-2">
+                <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-accent)]">Editing</p>
+                <h3 className="mt-1 line-clamp-2 text-xl font-black leading-tight text-[var(--color-ink)]">
+                  {selectedAdultsBook.title}
+                </h3>
+              </div>
+              <label className="grid gap-2">
+                <Label>Month</Label>
+                <input value={selectedAdultsBook.month} onChange={(e) => updateSelectedAdultsBook('month', e.target.value)} className={inputClass} />
+              </label>
+              <label className="grid gap-2">
+                <Label>Title</Label>
+                <input value={selectedAdultsBook.title} onChange={(e) => updateSelectedAdultsBook('title', e.target.value)} className={inputClass} />
+              </label>
+              <label className="grid gap-2">
+                <Label>Author</Label>
+                <input value={selectedAdultsBook.author} onChange={(e) => updateSelectedAdultsBook('author', e.target.value)} className={inputClass} placeholder="Optional" />
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <label className="grid gap-2">
+                  <Label>Meeting Dates</Label>
+                  <input value={selectedAdultsBook.meetings} onChange={(e) => updateSelectedAdultsBook('meetings', e.target.value)} className={inputClass} />
+                </label>
+                <label className="grid gap-2">
+                  <Label>Time</Label>
+                  <input value={selectedAdultsBook.time} onChange={(e) => updateSelectedAdultsBook('time', e.target.value)} className={inputClass} />
+                </label>
+              </div>
+              <div className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
+                <label className="flex flex-1 cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedAdultsBook.isCompleted ?? false}
+                    onChange={(e) => updateSelectedAdultsBookBoolean('isCompleted', e.target.checked)}
+                    className="h-5 w-5 rounded border-slate-300 text-[var(--color-accent)] focus:ring-[var(--color-accent)]"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold leading-tight text-slate-700">Mark as Completed</p>
+                    <p className="mt-0.5 text-[10px] text-slate-400">This will move the book to the &quot;Past Books&quot; section.</p>
+                  </div>
+                </label>
+              </div>
+              <div className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
+                <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
+                  <Image src={adultsCoverSrc} alt={selectedAdultsBook.title} fill className="object-cover" sizes="32px" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-tight text-slate-700">
+                    {bookImageOptions.find((o) => o.value === selectedAdultsBook.imageKey)?.label ?? 'Unknown'}
+                  </p>
+                  <p className="mt-0.5 font-mono text-[10px] text-slate-400">{selectedAdultsBook.imageKey}</p>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
       </article>
 

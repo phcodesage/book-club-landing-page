@@ -27,6 +27,11 @@ export function Navigation({
     { label: 'Contact', href: '#contact' },
   ];
 
+  const clubLinks = [
+    { label: 'Teens Club', href: '/' },
+    { label: 'Adults Club', href: '/adults' },
+  ];
+
   const socialLinks = [
     { icon: Facebook, href: 'https://facebook.com/ExceedLearningCenter', label: 'Facebook' },
     { icon: Linkedin, href: 'https://linkedin.com/company/exceed-learning-center-ny', label: 'LinkedIn' },
@@ -112,6 +117,17 @@ export function Navigation({
                   {link.label}
                 </button>
               ))}
+              <div className="flex items-center gap-1 rounded-full border border-gray-200 p-1">
+                {clubLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="rounded-full px-3 py-1 text-xs font-black uppercase tracking-widest transition-colors hover:bg-[var(--color-accent)] hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
             
             <div className="flex items-center gap-4 border-l border-gray-200 pl-8">
@@ -151,6 +167,21 @@ export function Navigation({
                 {link.label}
               </button>
             ))}
+            <div className="pt-2">
+              <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-gray-400">Switch Club</p>
+              <div className="flex gap-2">
+                {clubLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="rounded-full border border-gray-200 px-4 py-2 text-xs font-black uppercase tracking-widest text-[var(--color-ink)] transition-colors hover:bg-[var(--color-accent)] hover:text-white hover:border-[var(--color-accent)]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
           
           <div className="mt-8 border-t border-gray-100 pt-8">

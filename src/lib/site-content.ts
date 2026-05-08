@@ -53,6 +53,7 @@ export type SiteContent = {
     emailHref: string;
   };
   books: SiteBook[];
+  adultsBooks: SiteBook[];
 };
 
 export const defaultSiteContent: SiteContent = {
@@ -196,6 +197,7 @@ export const defaultSiteContent: SiteContent = {
       imageKey: 'what-do-you-really-want',
     },
   ],
+  adultsBooks: [],
 };
 
 const MONTH_NAMES = [
@@ -267,6 +269,7 @@ export function normalizeSiteContent(input: unknown): SiteContent {
   const footerSource = isRecord(input.footer) ? input.footer : {};
   const contactSource = isRecord(input.contact) ? input.contact : {};
   const booksSource = Array.isArray(input.books) && input.books.length > 0 ? input.books : defaultSiteContent.books;
+  const adultsBooksSource = Array.isArray(input.adultsBooks) ? input.adultsBooks : defaultSiteContent.adultsBooks;
 
   return {
     navigation: {
@@ -320,6 +323,18 @@ export function normalizeSiteContent(input: unknown): SiteContent {
     books: booksSource.map((book, index) =>
       normalizeBook(book, defaultSiteContent.books[index] ?? defaultSiteContent.books.at(-1)!)
     ),
+    adultsBooks: adultsBooksSource.map((book, index) => {
+      const fallback = defaultSiteContent.adultsBooks[index] ?? {
+        month: 'Month 2026',
+        title: 'Book Title',
+        author: '',
+        meetings: 'Date TBD',
+        time: '6:00 PM',
+        imageKey: DEFAULT_BOOK_IMAGE_KEY,
+        isCompleted: false,
+      };
+      return normalizeBook(book, fallback);
+    }),
   };
 }
 

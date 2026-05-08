@@ -10,7 +10,7 @@ import { Navigation } from './navigation';
 import { ScrollToTop } from './scroll-to-top';
 import PaymentModal, { calcCardPrice } from '../app/PaymentModal';
 
-type BookClubPageProps = {
+type AdultsBookClubPageProps = {
   content: SiteContent;
 };
 
@@ -31,7 +31,7 @@ type BookModalProps = {
 type AnalyticsEventType = 'page_view' | 'cta_click';
 
 function getVisitorId() {
-  const storageKey = 'teen-book-club-visitor-id';
+  const storageKey = 'adult-book-club-visitor-id';
   const existingId = window.localStorage.getItem(storageKey);
 
   if (existingId) {
@@ -46,7 +46,7 @@ function getVisitorId() {
 async function sendAnalyticsEvent(type: AnalyticsEventType) {
   const payload = JSON.stringify({
     type,
-    route: '/',
+    route: '/adults',
     visitorId: getVisitorId(),
     referrer: document.referrer || 'direct',
   });
@@ -118,7 +118,7 @@ function BookCard({ book, isPast, index, onSelect }: BookCardProps) {
           <p className="mt-2 text-sm font-medium text-[var(--color-gray-text)]">
             {book.author ? `by ${book.author}` : '\u00A0'}
           </p>
-          
+
           <div className="mt-6 flex flex-col gap-2 border-t border-gray-100 pt-4">
             <div className="flex items-center gap-2 text-xs font-semibold text-gray-500">
               <Calendar className="h-3.5 w-3.5 text-[var(--color-accent)]" />
@@ -130,12 +130,14 @@ function BookCard({ book, isPast, index, onSelect }: BookCardProps) {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent)]">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-accent)] text-white shadow-sm transition-transform group-hover:scale-110">
-              <Zap className="h-3 w-3" />
+          {!isPast && (
+            <div className="mt-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent)]">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-accent)] text-white shadow-sm transition-transform group-hover:scale-110">
+                <Zap className="h-3 w-3" />
+              </div>
+              <span>View Details</span>
             </div>
-            <span>View Details</span>
-          </div>
+          )}
         </div>
       </div>
     </button>
@@ -173,12 +175,12 @@ function BookModal({ book, onClose, onRegister, content }: BookModalProps) {
         <div className="flex flex-col md:flex-row">
           <div className="bg-gray-50 p-8 md:w-2/5">
             <div className="relative mx-auto aspect-[3/4] w-full max-w-[200px] overflow-hidden rounded shadow-2xl">
-              <Image 
-                src={coverImage} 
-                alt={book.title} 
-                fill 
-                className="object-cover" 
-                sizes="(max-width: 768px) 200px, 300px" 
+              <Image
+                src={coverImage}
+                alt={book.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 200px, 300px"
               />
             </div>
           </div>
@@ -231,7 +233,7 @@ function BookModal({ book, onClose, onRegister, content }: BookModalProps) {
   );
 }
 
-export function BookClubPage({ content }: BookClubPageProps) {
+export function AdultsBookClubPage({ content }: AdultsBookClubPageProps) {
   const [selectedBook, setSelectedBook] = useState<SiteBook | null>(null);
   const [today, setToday] = useState<Date | null>(null);
   const hasTrackedVisit = useRef(false);
@@ -271,55 +273,63 @@ export function BookClubPage({ content }: BookClubPageProps) {
     };
   }, [selectedBook]);
 
+  const books = content.adultsBooks ?? [];
+
+  const upcomingBooks = books.filter((book) => {
+    const isPast = book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false);
+    return !isPast;
+  });
+
+  const pastBooks = books.filter((book) =>
+    book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false)
+  );
+
   return (
     <>
       <PaymentModal
         isOpen={paymentModalOpen}
         onClose={() => setPaymentModalOpen(false)}
-        courseName="Teen Book Club"
+        courseName="Adult Book Club"
         cashPrice={`$${content.pricing.amount}${content.pricing.intervalLabel}`}
         cardPrice={calcCardPrice(`$${content.pricing.amount}`)}
         stripeLink={content.pricing.ctaHref}
       />
-      <Navigation 
-        logo={content.navigation.logoPath} 
-        email={content.contact.email} 
-        emailHref={content.contact.emailHref} 
+      <Navigation
+        logo={content.navigation.logoPath}
+        email={content.contact.email}
+        emailHref={content.contact.emailHref}
       />
       <main className="min-h-screen bg-[var(--color-light-bg)] pt-[104px]">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-[var(--color-ink)] py-20 lg:py-32">
-          {/* Abstract Background Pattern */}
           <div className="absolute inset-0">
-            <Image 
-              src={content.hero.backgroundImage} 
-              alt="Hero background" 
-              fill 
-              className="object-cover opacity-10" 
+            <Image
+              src={content.hero.backgroundImage}
+              alt="Hero background"
+              fill
+              className="object-cover opacity-10"
               sizes="100vw"
               priority
             />
           </div>
-          
+
           <div className="container relative z-10 mx-auto max-w-7xl px-4">
             <div className="flex flex-col items-center gap-12 lg:flex-row lg:text-left">
-              {/* Left Column: Text Content */}
+              {/* Left Column */}
               <div className="flex-1 text-center lg:text-left">
                 <div className="animate-fade-in inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-sm">
                   <Sparkles className="h-3.5 w-3.5 text-[var(--color-accent)]" />
-                  <span>{content.hero.communityLabel}</span>
+                  <span>Join our growing community of readers</span>
                 </div>
 
                 <h1 className="animate-slide-in mt-8 text-5xl font-black tracking-tight text-white md:text-7xl lg:text-8xl">
-                  {content.hero.title.split(' ').map((word, i) => (
-                    <span key={i} className={i === 1 ? 'text-[var(--color-accent)]' : ''}>
-                      {word}{' '}
-                    </span>
-                  ))}
+                  <span>ADULTS </span>
+                  <span className="text-[var(--color-accent)]">BOOK </span>
+                  <span>CLUB</span>
                 </h1>
 
                 <p className="animate-slide-in mt-8 max-w-2xl text-lg font-medium leading-relaxed text-gray-300 md:text-xl" style={{ animationDelay: '0.1s' }}>
-                  {content.hero.description}
+                  Connect with fellow adult readers, explore meaningful titles, and share how each book relates to your life. Where great reading helps you grow and thrive.
                 </p>
 
                 <div className="animate-slide-in mt-12 flex flex-wrap justify-center gap-4 lg:justify-start" style={{ animationDelay: '0.2s' }}>
@@ -327,9 +337,9 @@ export function BookClubPage({ content }: BookClubPageProps) {
                     onClick={() => { void sendAnalyticsEvent('cta_click'); setPaymentModalOpen(true); }}
                     className="rounded-full bg-[var(--color-accent)] px-10 py-4 text-sm font-black uppercase tracking-widest text-white shadow-xl transition-all hover:bg-[var(--color-accent-hover)] hover:shadow-2xl hover:-translate-y-1"
                   >
-                    {content.pricing.ctaLabel}
+                    Join Book Club Now
                   </button>
-                  <button 
+                  <button
                     onClick={() => document.getElementById('reading-list')?.scrollIntoView({ behavior: 'smooth' })}
                     className="rounded-full border-2 border-white/20 px-10 py-4 text-sm font-black uppercase tracking-widest text-white transition-all hover:bg-white/10 hover:border-white/40"
                   >
@@ -338,20 +348,19 @@ export function BookClubPage({ content }: BookClubPageProps) {
                 </div>
               </div>
 
-              {/* Right Column: Image Content */}
+              {/* Right Column */}
               <div className="animate-fade-in relative flex-1" style={{ animationDelay: '0.3s' }}>
                 <div className="relative mx-auto aspect-[4/3] w-full max-w-[600px] overflow-hidden rounded-2xl shadow-2xl">
-                  <Image 
-                    src={siteBg} 
-                    alt="Teen Book Club" 
-                    fill 
-                    priority 
-                    className="object-cover transition-transform duration-700 hover:scale-105" 
-                    sizes="(max-width: 1024px) 100vw, 50vw" 
+                  <Image
+                    src={siteBg}
+                    alt="Adult Book Club"
+                    fill
+                    priority
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/60 via-transparent to-transparent" />
-                  
-                  {/* Decorative Elements on Image */}
+
                   <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between rounded-xl bg-white/10 p-4 backdrop-blur-md">
                     <div className="flex items-center gap-3 text-white">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] shadow-lg">
@@ -364,15 +373,14 @@ export function BookClubPage({ content }: BookClubPageProps) {
                     </div>
                   </div>
                 </div>
-                
-                {/* Floating Accent Cards */}
+
                 <div className="absolute -right-6 -top-6 hidden h-24 w-24 animate-float items-center justify-center rounded-2xl bg-white shadow-2xl lg:flex">
                   <BookOpen className="h-10 w-10 text-[var(--color-accent)]" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 hidden h-32 w-48 animate-float items-center justify-center rounded-2xl bg-[var(--color-accent)] p-4 text-white shadow-2xl lg:flex" style={{ animationDelay: '-3s' }}>
                   <div className="text-center">
-                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80">{content.hero.floatingCardTitle}</p>
-                    <p className="mt-1 text-lg font-black leading-tight">{content.hero.floatingCardSubtitle}</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Next Meeting</p>
+                    <p className="mt-1 text-lg font-black leading-tight">Join Our Discussion!</p>
                   </div>
                 </div>
               </div>
@@ -386,15 +394,15 @@ export function BookClubPage({ content }: BookClubPageProps) {
             <div className="mb-4 flex items-center justify-center gap-3">
               <div className="h-1 w-10 bg-[var(--color-accent)] rounded-full" />
               <span className="text-sm font-black uppercase tracking-[0.3em] text-[var(--color-accent)]">
-                {content.schedule.eyebrow}
+                2026 Reading List
               </span>
               <div className="h-1 w-10 bg-[var(--color-accent)] rounded-full" />
             </div>
             <h2 className="text-4xl font-black tracking-tight text-[var(--color-ink)] md:text-5xl lg:text-6xl">
-              {content.schedule.title}
+              Adult Books for 2026
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg font-medium text-[var(--color-gray-text)]">
-              {content.schedule.description}
+              Explore the full lineup and open any current title for the meeting details.
             </p>
           </header>
 
@@ -402,14 +410,14 @@ export function BookClubPage({ content }: BookClubPageProps) {
           <section id="pricing" className="mb-32 scroll-mt-32">
             <div className="relative overflow-hidden rounded-3xl bg-white p-12 shadow-[0_20px_60px_rgba(0,0,0,0.05)] md:p-16">
               <div className="absolute right-0 top-0 h-full w-1/3 bg-[var(--color-accent)]/5 skew-x-12" />
-              
+
               <div className="relative z-10 flex flex-col items-center justify-between gap-12 lg:flex-row lg:text-left">
                 <div className="max-w-xl text-center lg:text-left">
                   <h3 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                    {content.pricing.sectionHeading}
+                    Join the Club and Ignite Your Brilliance
                   </h3>
                   <p className="mt-4 text-lg font-medium text-[var(--color-gray-text)]">
-                    {content.pricing.helperText}
+                    Join the adult reading community and reserve your spot.
                   </p>
                 </div>
 
@@ -423,83 +431,86 @@ export function BookClubPage({ content }: BookClubPageProps) {
                     onClick={() => { void sendAnalyticsEvent('cta_click'); setPaymentModalOpen(true); }}
                     className="rounded-full bg-[var(--color-accent)] px-12 py-5 text-sm font-black uppercase tracking-widest text-white shadow-[0_15px_30px_rgba(194,39,45,0.3)] transition-all hover:bg-[var(--color-accent-hover)] hover:shadow-[0_20px_40px_rgba(194,39,45,0.4)] hover:-translate-y-1"
                   >
-                    {content.pricing.ctaLabel}
+                    Join Book Club Now
                   </button>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Gallery Section */}
-          <section className="mb-32">
-            <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
-              <div>
-                <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                  {content.schedule.galleryTitle}
-                </h2>
-                <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
-                  {content.schedule.galleryDescription}
-                </p>
+          {/* Upcoming Books Gallery */}
+          {upcomingBooks.length > 0 && (
+            <section className="mb-32">
+              <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
+                <div>
+                  <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
+                    Complete 2026 Reading Schedule
+                  </h2>
+                  <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
+                    Click on any current book to see the meeting details.
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {content.books.filter((book) => {
-                const isPast = book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false);
-                return !isPast;
-              }).map((book, index) => {
-                return (
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {upcomingBooks.map((book, index) => (
                   <BookCard
-                    key={`${book.month}-${book.title}-${index}`}
+                    key={`upcoming-${book.month}-${book.title}-${index}`}
                     book={book}
                     isPast={false}
                     index={index}
                     onSelect={setSelectedBook}
                   />
-                );
-              })}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Past Books Section */}
-          {(() => {
-            const pastBooks = content.books.filter((book) =>
-              book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false)
-            );
-            if (pastBooks.length === 0) return null;
-            return (
-              <section className="mb-32">
-                <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
-                  <div>
-                    <div className="mb-3 flex items-center gap-3">
-                      <div className="h-1 w-8 rounded-full bg-gray-300" />
-                      <span className="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
-                        Already Read
-                      </span>
-                      <div className="h-1 w-8 rounded-full bg-gray-300" />
-                    </div>
-                    <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                      Past Books We&apos;ve Read
-                    </h2>
-                    <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
-                      A look back at the titles our teen readers have explored together.
-                    </p>
+          {pastBooks.length > 0 && (
+            <section className="mb-32">
+              <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
+                <div>
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="h-1 w-8 rounded-full bg-gray-300" />
+                    <span className="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
+                      Already Read
+                    </span>
+                    <div className="h-1 w-8 rounded-full bg-gray-300" />
                   </div>
+                  <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
+                    Past Books We&apos;ve Read
+                  </h2>
+                  <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
+                    A look back at the titles our adult readers have explored together.
+                  </p>
                 </div>
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {pastBooks.map((book, index) => (
-                    <BookCard
-                      key={`past-${book.month}-${book.title}-${index}`}
-                      book={book}
-                      isPast={true}
-                      index={index}
-                      onSelect={() => {}}
-                    />
-                  ))}
-                </div>
-              </section>
-            );
-          })()}
+              </div>
+
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {pastBooks.map((book, index) => (
+                  <BookCard
+                    key={`past-${book.month}-${book.title}-${index}`}
+                    book={book}
+                    isPast={true}
+                    index={index}
+                    onSelect={() => {}}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Empty state */}
+          {books.length === 0 && (
+            <section className="mb-32 flex flex-col items-center justify-center py-24 text-center">
+              <BookOpen className="mb-6 h-16 w-16 text-gray-200" />
+              <h2 className="text-2xl font-black text-[var(--color-ink)]">Reading List Coming Soon</h2>
+              <p className="mt-4 max-w-md text-lg font-medium text-[var(--color-gray-text)]">
+                The adult book club reading schedule is being finalized. Check back soon!
+              </p>
+            </section>
+          )}
 
           {/* Footer Section */}
           <footer id="contact" className="pt-20 border-t border-gray-200 scroll-mt-32">
@@ -569,7 +580,14 @@ export function BookClubPage({ content }: BookClubPageProps) {
           </footer>
         </div>
 
-        {selectedBook ? <BookModal book={selectedBook} onClose={() => setSelectedBook(null)} onRegister={() => { setSelectedBook(null); setPaymentModalOpen(true); }} content={content} /> : null}
+        {selectedBook ? (
+          <BookModal
+            book={selectedBook}
+            onClose={() => setSelectedBook(null)}
+            onRegister={() => { setSelectedBook(null); setPaymentModalOpen(true); }}
+            content={content}
+          />
+        ) : null}
       </main>
       <ScrollToTop />
     </>

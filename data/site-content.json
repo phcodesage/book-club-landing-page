@@ -142,5 +142,106 @@
       "time": "5:00 PM",
       "imageKey": "what-do-you-really-want"
     }
+  ],
+  "adultsBooks": [
+    {
+      "month": "January 2026",
+      "title": "Divergent",
+      "author": "Veronica Roth",
+      "meetings": "January 15 and 29",
+      "time": "6:00 PM",
+      "imageKey": "divergent-book",
+      "isCompleted": true
+    },
+    {
+      "month": "February 2026",
+      "title": "Your Life, Your Way",
+      "author": "",
+      "meetings": "February 11 and 25",
+      "time": "6:00 PM",
+      "imageKey": "your-life-your-way",
+      "isCompleted": true
+    },
+    {
+      "month": "March 2026",
+      "title": "The Leader in Me",
+      "author": "Stephen Covey",
+      "meetings": "March 12 and 26",
+      "time": "6:00 PM",
+      "imageKey": "leader-in-me",
+      "isCompleted": true
+    },
+    {
+      "month": "April 2026",
+      "title": "Don't Sweat the Small Stuff",
+      "author": "Richard Carlson",
+      "meetings": "April 9 and 30",
+      "time": "6:00 PM",
+      "imageKey": "dont-sweat-small-stuff"
+    },
+    {
+      "month": "May 2026",
+      "title": "Behind Happy Faces",
+      "author": "Ross Szabo",
+      "meetings": "May 14 and 28",
+      "time": "6:00 PM",
+      "imageKey": "behind-happy-faces"
+    },
+    {
+      "month": "June 2026",
+      "title": "What Do You Really Want? How to Set a Goal and Go for It!",
+      "author": "Beverly K. Bachel",
+      "meetings": "June 11 and 25",
+      "time": "6:00 PM",
+      "imageKey": "what-do-you-really-want"
+    },
+    {
+      "month": "July 2026",
+      "title": "You Are Stronger Than You Think",
+      "author": "Gary Lew",
+      "meetings": "July 9 and 30",
+      "time": "6:00 PM",
+      "imageKey": "stronger-than-you-think"
+    },
+    {
+      "month": "August 2026",
+      "title": "A Year of Positive Thinking for Teens",
+      "author": "Katie Hurley",
+      "meetings": "August 13 and 27",
+      "time": "6:00 PM",
+      "imageKey": "positive-thinking"
+    },
+    {
+      "month": "September 2026",
+      "title": "Life Skills for Teens",
+      "author": "Forne Bowe",
+      "meetings": "September 10 and 24",
+      "time": "6:00 PM",
+      "imageKey": "life-skills"
+    },
+    {
+      "month": "October 2026",
+      "title": "BFF and NRF (Not Really Friends) - Friendship Health Guide",
+      "author": "",
+      "meetings": "October 8 and 29",
+      "time": "6:00 PM",
+      "imageKey": "bff-and-nrf"
+    },
+    {
+      "month": "November 2026",
+      "title": "The Teen Investor: How to Start Early, Invest Often and Build Wealth",
+      "author": "Emmanuel Modu and Andrea Walker",
+      "meetings": "November 12 and 26",
+      "time": "6:00 PM",
+      "imageKey": "teen-investor"
+    },
+    {
+      "month": "December 2026",
+      "title": "You: The Owner's Manual for Teens",
+      "author": "",
+      "meetings": "December 3 and 23",
+      "time": "6:00 PM",
+      "imageKey": "you-owners-manual"
+    }
   ]
 }

@@ -9,6 +9,7 @@ export interface ISiteContent extends Document {
   footer: { highlightItems: string[]; copyrightText: string };
   contact: { phone: string; location: string; email: string; emailHref: string };
   books: Array<{ month: string; title: string; author: string; meetings: string; time: string; imageKey: string; isCompleted: boolean }>;
+  adultsBooks: Array<{ month: string; title: string; author: string; meetings: string; time: string; imageKey: string; isCompleted: boolean }>;
   updatedAt: Date;
 }
 
@@ -65,6 +66,7 @@ const SiteContentSchema = new Schema<ISiteContent>({
     emailHref: String,
   },
   books: [BookSchema],
+  adultsBooks: { type: [BookSchema], default: [] },
 }, { timestamps: true });
 
 export default mongoose.models.SiteContent as mongoose.Model<ISiteContent> ||
