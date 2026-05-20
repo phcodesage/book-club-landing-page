@@ -688,7 +688,7 @@ export function CmsPanel({ content, setContent, hasUnsavedChanges, isSaving, onR
                 <input value={content.pricing.ctaLabel} onChange={(e) => updatePricing('ctaLabel', e.target.value)} className={inputClass} />
               </label>
               <label className="grid gap-2">
-                <Label>Stripe URL</Label>
+                <Label>Valor Pay URL</Label>
                 <input value={content.pricing.ctaHref} onChange={(e) => updatePricing('ctaHref', e.target.value)} className={inputClass} />
               </label>
             </div>

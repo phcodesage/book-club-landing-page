@@ -74,7 +74,7 @@ export const defaultSiteContent: SiteContent = {
     amount: '50',
     intervalLabel: '/ month',
     ctaLabel: 'Join Book Club Now',
-    ctaHref: 'https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00',
+    ctaHref: 'https://securelink-prod.valorpaytech.com:4430/?redirect=1&uid=4b706c9a-5309-11f1-a8e1-12a0879a85b1',
     helperText: 'Join the teen reading community and reserve your spot.',
     sectionHeading: 'Join the Club and Ignite Your Brilliance',
   },
@@ -87,7 +87,7 @@ export const defaultSiteContent: SiteContent = {
   },
   modal: {
     ctaLabel: 'Reserve Your Spot',
-    ctaHref: 'https://buy.stripe.com/eVq00caOo1ZM1lD50ndfG00',
+    ctaHref: 'https://securelink-prod.valorpaytech.com:4430/?redirect=1&uid=4b706c9a-5309-11f1-a8e1-12a0879a85b1',
   },
   footer: {
     highlightItems: ['Engaging Discussions', 'Strong Community', 'Practical Takeaways'],
