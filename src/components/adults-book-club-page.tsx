@@ -292,7 +292,7 @@ export function AdultsBookClubPage({ content }: AdultsBookClubPageProps) {
         courseName="Adult Book Club"
         cashPrice={`$${content.pricing.amount}${content.pricing.intervalLabel}`}
         cardPrice={calcCardPrice(`$${content.pricing.amount}`)}
-        stripeLink={content.pricing.ctaHref}
+        cardPaymentLink={content.pricing.ctaHref}
       />
       <Navigation
         logo={content.navigation.logoPath}
