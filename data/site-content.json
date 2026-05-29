@@ -51,7 +51,8 @@
       "author": "Gary Lew",
       "meetings": "January 15 and 29",
       "time": "5:00 PM",
-      "imageKey": "stronger-than-you-think"
+      "imageKey": "stronger-than-you-think",
+      "isCompleted": true
     },
     {
       "month": "February 2026",
@@ -59,7 +60,8 @@
       "author": "",
       "meetings": "February 11 and 25",
       "time": "5:00 PM",
-      "imageKey": "you-owners-manual"
+      "imageKey": "you-owners-manual",
+      "isCompleted": true
     },
     {
       "month": "March 2026",

@@ -235,12 +235,12 @@ function BookModal({ book, onClose, onRegister, content }: BookModalProps) {
 
 export function AdultsBookClubPage({ content }: AdultsBookClubPageProps) {
   const [selectedBook, setSelectedBook] = useState<SiteBook | null>(null);
-  const [today, setToday] = useState<Date | null>(null);
+  const [mounted, setMounted] = useState(false);
   const hasTrackedVisit = useRef(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   useEffect(() => {
-    setToday(new Date());
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -276,12 +276,12 @@ export function AdultsBookClubPage({ content }: AdultsBookClubPageProps) {
   const books = content.adultsBooks ?? [];
 
   const upcomingBooks = books.filter((book) => {
-    const isPast = book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false);
+    const isPast = book.isCompleted || (mounted ? isMonthPast(book.month, new Date(), book.meetings) : false);
     return !isPast;
   });
 
   const pastBooks = books.filter((book) =>
-    book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false)
+    book.isCompleted || (mounted ? isMonthPast(book.month, new Date(), book.meetings) : false)
   );
 
   return (

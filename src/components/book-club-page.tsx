@@ -233,12 +233,12 @@ function BookModal({ book, onClose, onRegister, content }: BookModalProps) {
 
 export function BookClubPage({ content }: BookClubPageProps) {
   const [selectedBook, setSelectedBook] = useState<SiteBook | null>(null);
-  const [today, setToday] = useState<Date | null>(null);
+  const [mounted, setMounted] = useState(false);
   const hasTrackedVisit = useRef(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
   useEffect(() => {
-    setToday(new Date());
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -445,7 +445,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
 
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {content.books.filter((book) => {
-                const isPast = book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false);
+                const isPast = book.isCompleted || (mounted ? isMonthPast(book.month, new Date(), book.meetings) : false);
                 return !isPast;
               }).map((book, index) => {
                 return (
@@ -464,7 +464,7 @@ export function BookClubPage({ content }: BookClubPageProps) {
           {/* Past Books Section */}
           {(() => {
             const pastBooks = content.books.filter((book) =>
-              book.isCompleted || (today ? isMonthPast(book.month, today, book.meetings) : false)
+              book.isCompleted || (mounted ? isMonthPast(book.month, new Date(), book.meetings) : false)
             );
             if (pastBooks.length === 0) return null;
             return (

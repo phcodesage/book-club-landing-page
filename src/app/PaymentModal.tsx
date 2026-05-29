@@ -139,7 +139,7 @@ export default function PaymentModal({
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       style={{ animation: "fadeIn 0.2s ease" }}
     >
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
+      <div className={`bg-white rounded-3xl shadow-2xl w-full overflow-hidden flex flex-col max-h-[90vh] transition-all duration-300 ${step === "zelle" ? "max-w-md md:max-w-4xl" : "max-w-md"}`}>
         {/* Header */}
         <div className="px-6 py-5 flex items-center justify-between border-b bg-[#05264d]">
           <div>
@@ -219,137 +219,139 @@ export default function PaymentModal({
 
           {/* STEP: Zelle form */}
           {step === "zelle" && (
-            <div>
-              <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-2xl text-sm text-green-800">
-                <p className="font-bold mb-1">How to pay via Zelle:</p>
-                <ol className="list-decimal list-inside space-y-1 text-green-700">
-                  <li>Open your banking app and go to Zelle</li>
-                  <li>
-                    Send <strong>{cashPrice}</strong> to{" "}
-                    <strong>payments@exceedlearningcenterny.com</strong>
-                  </li>
-                  <li>Note your Zelle reference/confirmation number</li>
-                  <li>Fill in the form below to confirm your enrollment</li>
-                </ol>
-              </div>
+<form onSubmit={handleZelleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column: Instructions and Screenshot */}
+                <div className="flex flex-col gap-4 justify-between">
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-2xl text-sm text-green-800">
+                    <p className="font-bold mb-1">How to pay via Zelle:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-green-700">
+                      <li>Open your banking app and go to Zelle</li>
+                      <li>Send <strong>{cashPrice}</strong> to <strong>payments@exceedlearningcenterny.com</strong></li>
+                      <li>Note your Zelle reference/confirmation number</li>
+                      <li>Fill in the form below to confirm your enrollment</li>
+                    </ol>
+                  </div>
 
-              <form onSubmit={handleZelleSubmit} className="space-y-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider">
-                    Full Name *
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    value={form.name}
-                    onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                    placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all text-[#05264d]"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider">
-                    Phone Number *
-                  </label>
-                  <input
-                    required
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                    placeholder="(555) 000-0000"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all text-[#05264d]"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider">
-                    Zelle Reference / Confirmation Number *
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    value={form.reference}
-                    onChange={(e) => setForm((f) => ({ ...f, reference: e.target.value }))}
-                    placeholder="e.g. ZL123456789"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all text-[#05264d]"
-                  />
-                </div>
-
-                {/* Image Upload Field */}
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider">
-                    Payment Screenshot (Optional)
-                  </label>
-                  <p className="text-xs text-gray-500 mb-2">
-                    Upload a screenshot of your Zelle confirmation for faster verification
-                  </p>
-                  
-                  {!uploadPreview ? (
-                    <label className="w-full cursor-pointer">
-                      <div className="w-full px-4 py-6 rounded-xl bg-gray-50 border-2 border-dashed border-gray-300 hover:border-green-400 hover:bg-green-50 transition-all text-center">
-                        <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm font-medium text-gray-600">Click to upload screenshot</p>
-                        <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP up to 5MB</p>
-                      </div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
+                  <div className="flex-grow flex flex-col justify-end">
+                    <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider block mb-1">
+                      Payment Screenshot (Optional)
                     </label>
-                  ) : (
-                    <div className="relative">
-                      <div className="w-full rounded-xl border-2 border-green-200 bg-green-50 p-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-white border border-green-200 relative">
-                            <Image 
-                              src={uploadPreview} 
-                              alt="Payment screenshot preview" 
-                              fill
-                              className="object-cover"
-                            />
+                    <div className="flex-grow flex flex-col">
+                      {!uploadPreview ? (
+                        <label className="flex-grow cursor-pointer block">
+                          <div className="w-full px-4 py-5 rounded-xl bg-gray-50 border-2 border-dashed border-gray-300 hover:border-green-400 hover:bg-green-50 transition-all text-center min-h-[140px] flex flex-col justify-center items-center">
+                            <Upload className="w-6 h-6 text-gray-400 mb-1" />
+                            <p className="text-sm font-semibold text-gray-600">Click to upload screenshot</p>
+                            <p className="text-xs text-gray-400 mt-0.5">PNG, JPG, WebP up to 5MB</p>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-green-800 truncate">
-                              {uploadedImage?.name}
-                            </p>
-                            <p className="text-xs text-green-600">
-                              {uploadedImage && (uploadedImage.size / 1024 / 1024).toFixed(1)}MB
-                            </p>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                          />
+                        </label>
+                      ) : (
+                        <div className="relative">
+                          <div className="w-full rounded-xl border-2 border-green-200 bg-green-50 p-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-lg overflow-hidden bg-white border border-green-200 relative">
+                                <Image 
+                                  src={uploadPreview} 
+                                  alt="Payment screenshot preview" 
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-green-800 truncate">
+                                  {uploadedImage?.name}
+                                </p>
+                                <p className="text-xs text-green-600">
+                                  {uploadedImage && (uploadedImage.size / 1024 / 1024).toFixed(1)}MB
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={removeImage}
+                                className="p-1 rounded-full hover:bg-green-200 text-green-600 transition-colors"
+                                title="Remove image"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
-                          <button
-                            type="button"
-                            onClick={removeImage}
-                            className="p-1 rounded-full hover:bg-green-200 text-green-600 transition-colors"
-                            title="Remove image"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
                         </div>
-                      </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                <div className="flex gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setStep("choose")}
-                    className="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
-                  >
-                    Back
-                  </button>
-                  <button
-                    disabled={loading}
-                    type="submit"
-                    className="flex-1 py-3 rounded-xl bg-green-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-green-700 transition-colors disabled:opacity-60"
-                  >
-                    <Send className="w-4 h-4" />
-                    {loading ? "Submitting..." : "Confirm Zelle Payment"}
-                  </button>
+                {/* Right Column: Inputs and Buttons */}
+                <div className="flex flex-col justify-between">
+                  <div className="space-y-3 mb-4">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider block">
+                        Full Name *
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        value={form.name}
+                        onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                        placeholder="John Doe"
+                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all text-[#05264d]"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider block">
+                        Phone Number *
+                      </label>
+                      <input
+                        required
+                        type="tel"
+                        value={form.phone}
+                        onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                        placeholder="(555) 000-0000"
+                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all text-[#05264d]"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#05264d] uppercase tracking-wider block">
+                        Zelle Reference / Confirmation Number *
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        value={form.reference}
+                        onChange={(e) => setForm((f) => ({ ...f, reference: e.target.value }))}
+                        placeholder="e.g. ZL123456789"
+                        className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all text-[#05264d]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setStep("choose")}
+                      className="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
+                    >
+                      Back
+                    </button>
+                    <button
+                      disabled={loading}
+                      type="submit"
+                      className="flex-1 py-3 rounded-xl bg-green-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-green-700 transition-colors disabled:opacity-60 shrink-0"
+                    >
+                      <Send className="w-4 h-4 shrink-0" />
+                      <span>{loading ? "Submitting..." : "Confirm Zelle Payment"}</span>
+                    </button>
+                  </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           )}
 
           {/* STEP: Done */}
