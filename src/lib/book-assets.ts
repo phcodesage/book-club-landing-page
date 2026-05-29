@@ -16,6 +16,20 @@ import whatDoYouReallyWant from '@/assets/what-do-you-really-want.jpg';
 import youOwnersManual from "@/assets/You-the-ownser's-manual-for-teens.jpg";
 import yourLifeYourWay from '@/assets/your-life-your-way.jpg';
 
+// Adults Books
+import mindGutConnection from '@/assets/the-mind-gut-connection.jpg';
+import bookOfJoy from '@/assets/the-book-of-joy.jpg';
+import atlasOfTheHeart from '@/assets/atlas-of-the-heart.jpg';
+import grit from '@/assets/grit.jpg';
+import sacredRest from '@/assets/the-sacred-rest.jpg';
+import setBoundaries from '@/assets/set-bounderies-find-peace.jpg';
+import goodInside from '@/assets/good-inside.jpg';
+import bravingWilderness from '@/assets/braving-the-wilderness.jpg';
+import moneyMagic from '@/assets/money-magic.webp';
+import leanStartup from '@/assets/the-lean-startup.jpg';
+import essentialism from '@/assets/the-desciplined-pursuit-of-less.jpg';
+import bestYearEver from '@/assets/your-best-year-ever.jpg';
+
 export const bookImageMap = {
   'behind-happy-faces': behindHappyFaces,
   'bff-and-nrf': bffAndNrf,
@@ -32,6 +46,19 @@ export const bookImageMap = {
   'what-do-you-really-want': whatDoYouReallyWant,
   'you-owners-manual': youOwnersManual,
   'your-life-your-way': yourLifeYourWay,
+  // Adults Books
+  'mind-gut-connection': mindGutConnection,
+  'book-of-joy': bookOfJoy,
+  'atlas-of-the-heart': atlasOfTheHeart,
+  'grit': grit,
+  'sacred-rest': sacredRest,
+  'set-boundaries': setBoundaries,
+  'good-inside': goodInside,
+  'braving-wilderness': bravingWilderness,
+  'money-magic': moneyMagic,
+  'lean-startup': leanStartup,
+  'essentialism': essentialism,
+  'best-year-ever': bestYearEver,
 } satisfies Record<string, StaticImageData>;
 
 export type BookImageKey = Exclude<keyof typeof bookImageMap, 'site-bg'>;
@@ -51,6 +78,19 @@ export const bookImageOptions = [
   { value: 'what-do-you-really-want', label: 'What Do You Really Want?' },
   { value: 'divergent-book', label: 'Divergent' },
   { value: 'your-life-your-way', label: 'Your Life, Your Way' },
+  // Adults Books
+  { value: 'mind-gut-connection', label: 'Mind-Gut Connection' },
+  { value: 'book-of-joy', label: 'The Book of Joy' },
+  { value: 'atlas-of-the-heart', label: 'Atlas of the Heart' },
+  { value: 'grit', label: 'Grit' },
+  { value: 'sacred-rest', label: 'Sacred Rest' },
+  { value: 'set-boundaries', label: 'Set Boundaries, Find Peace' },
+  { value: 'good-inside', label: 'Good Inside' },
+  { value: 'braving-wilderness', label: 'Braving the Wilderness' },
+  { value: 'money-magic', label: 'Money Magic' },
+  { value: 'lean-startup', label: 'The Lean Startup' },
+  { value: 'essentialism', label: 'Essentialism' },
+  { value: 'best-year-ever', label: 'Your Best Year Ever' },
 ] as const;
 
 export const BOOK_IMAGE_KEYS = Object.keys(bookImageMap).filter(

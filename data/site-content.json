@@ -148,102 +148,103 @@
   "adultsBooks": [
     {
       "month": "January 2026",
-      "title": "Divergent",
-      "author": "Veronica Roth",
-      "meetings": "January 15 and 29",
+      "title": "Mind - Gut Connection",
+      "author": "Dr. Emeran Mayer",
+      "meetings": "January 12 and 26",
       "time": "6:00 PM",
-      "imageKey": "divergent-book",
+      "imageKey": "mind-gut-connection",
       "isCompleted": true
     },
     {
       "month": "February 2026",
-      "title": "Your Life, Your Way",
-      "author": "",
-      "meetings": "February 11 and 25",
+      "title": "The Book of Joy",
+      "author": "Dalai Lama & Desmond Tutu",
+      "meetings": "February 9 and 23",
       "time": "6:00 PM",
-      "imageKey": "your-life-your-way",
+      "imageKey": "book-of-joy",
       "isCompleted": true
     },
     {
       "month": "March 2026",
-      "title": "The Leader in Me",
-      "author": "Stephen Covey",
-      "meetings": "March 12 and 26",
+      "title": "Atlas of the Heart",
+      "author": "Brene Brown",
+      "meetings": "March 9 and 30",
       "time": "6:00 PM",
-      "imageKey": "leader-in-me",
+      "imageKey": "atlas-of-the-heart",
       "isCompleted": true
     },
     {
       "month": "April 2026",
-      "title": "Don't Sweat the Small Stuff",
-      "author": "Richard Carlson",
-      "meetings": "April 9 and 30",
+      "title": "Grit",
+      "author": "Angela Duckworth",
+      "meetings": "April 13 and 27",
       "time": "6:00 PM",
-      "imageKey": "dont-sweat-small-stuff"
+      "imageKey": "grit"
     },
     {
       "month": "May 2026",
-      "title": "Behind Happy Faces",
-      "author": "Ross Szabo",
-      "meetings": "May 14 and 28",
+      "title": "Sacred Rest",
+      "author": "Sandra Dalton-Smith",
+      "meetings": "May 11 and 25",
       "time": "6:00 PM",
-      "imageKey": "behind-happy-faces"
+      "imageKey": "sacred-rest"
     },
     {
       "month": "June 2026",
-      "title": "What Do You Really Want? How to Set a Goal and Go for It!",
-      "author": "Beverly K. Bachel",
-      "meetings": "June 11 and 25",
+      "title": "Set Boundaries, Find Peace",
+      "author": "Nedra Glover Tawwab",
+      "meetings": "June 8 and 29",
       "time": "6:00 PM",
-      "imageKey": "what-do-you-really-want"
+      "imageKey": "set-boundaries"
     },
     {
       "month": "July 2026",
-      "title": "You Are Stronger Than You Think",
-      "author": "Gary Lew",
-      "meetings": "July 9 and 30",
+      "title": "Good Inside",
+      "author": "Dr. Becky Kennedy",
+      "meetings": "July 13 and 27",
       "time": "6:00 PM",
-      "imageKey": "stronger-than-you-think"
+      "imageKey": "good-inside"
     },
     {
       "month": "August 2026",
-      "title": "A Year of Positive Thinking for Teens",
-      "author": "Katie Hurley",
-      "meetings": "August 13 and 27",
+      "title": "Braving the Wilderness",
+      "author": "Brene Brown",
+      "meetings": "August 10 and 31",
       "time": "6:00 PM",
-      "imageKey": "positive-thinking"
+      "imageKey": "braving-wilderness"
     },
     {
       "month": "September 2026",
-      "title": "Life Skills for Teens",
-      "author": "Forne Bowe",
-      "meetings": "September 10 and 24",
+      "title": "Money Magic",
+      "author": "Laurence Kotlikoff",
+      "meetings": "September 14 and 28",
       "time": "6:00 PM",
-      "imageKey": "life-skills"
+      "imageKey": "money-magic"
     },
     {
       "month": "October 2026",
-      "title": "BFF and NRF (Not Really Friends) - Friendship Health Guide",
-      "author": "",
-      "meetings": "October 8 and 29",
+      "title": "The Lean Startup",
+      "author": "Eric Ries",
+      "meetings": "October 12 and 26",
       "time": "6:00 PM",
-      "imageKey": "bff-and-nrf"
+      "imageKey": "lean-startup"
     },
     {
       "month": "November 2026",
-      "title": "The Teen Investor: How to Start Early, Invest Often and Build Wealth",
-      "author": "Emmanuel Modu and Andrea Walker",
-      "meetings": "November 12 and 26",
+      "title": "Essentialism",
+      "author": "Greg McKeown",
+      "meetings": "November 9 and 30",
       "time": "6:00 PM",
-      "imageKey": "teen-investor"
+      "imageKey": "essentialism"
     },
     {
       "month": "December 2026",
-      "title": "You: The Owner's Manual for Teens",
-      "author": "",
-      "meetings": "December 3 and 23",
+      "title": "Your Best Year Ever",
+      "author": "Michael Hyatt",
+      "meetings": "December 14 and 28",
       "time": "6:00 PM",
-      "imageKey": "you-owners-manual"
+      "imageKey": "best-year-ever"
     }
   ]
+
 }
