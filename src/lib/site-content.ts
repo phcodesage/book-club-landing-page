@@ -375,3 +375,63 @@ export function isMonthPast(monthStr: string, referenceDate: Date, meetings?: st
   // Fallback to month-level precision: it's only past if the month is over.
   return false;
 }
+
+export type CategorizedBooks = {
+  currentMonth: SiteBook[];
+  nextMonth: SiteBook[];
+  future: SiteBook[];
+  past: SiteBook[];
+};
+
+/**
+ * Categorise a list of books into four buckets relative to the current date:
+ *  – currentMonth  : the book(s) whose month matches `referenceDate`
+ *  – nextMonth     : the book(s) whose month is one month after `referenceDate`
+ *  – future        : every upcoming book that is neither current nor next month
+ *  – past          : every book already completed / whose month has passed
+ */
+export function categorizeBooks(
+  books: SiteBook[],
+  referenceDate: Date,
+  mounted: boolean,
+): CategorizedBooks {
+  const curMonth = referenceDate.getMonth();      // 0-indexed
+  const curYear  = referenceDate.getFullYear();
+
+  // Calculate next-month index and year (handles Dec → Jan rollover)
+  const nextMonthIndex = (curMonth + 1) % 12;
+  const nextMonthYear  = curMonth === 11 ? curYear + 1 : curYear;
+
+  const result: CategorizedBooks = {
+    currentMonth: [],
+    nextMonth: [],
+    future: [],
+    past: [],
+  };
+
+  for (const book of books) {
+    const isPast =
+      book.isCompleted ||
+      (mounted ? isMonthPast(book.month, referenceDate, book.meetings) : false);
+
+    if (isPast) {
+      result.past.push(book);
+      continue;
+    }
+
+    // Parse the book's month
+    const [monthName, yearStr] = book.month.split(' ');
+    const bookMonthIndex = MONTH_NAMES.indexOf(monthName);
+    const bookYear = Number.parseInt(yearStr, 10);
+
+    if (bookYear === curYear && bookMonthIndex === curMonth) {
+      result.currentMonth.push(book);
+    } else if (bookYear === nextMonthYear && bookMonthIndex === nextMonthIndex) {
+      result.nextMonth.push(book);
+    } else {
+      result.future.push(book);
+    }
+  }
+
+  return result;
+}

@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { BookOpen, Calendar, Clock, Mail, MapPin, Phone, Sparkles, Users, X, Zap } from 'lucide-react';
+import { ArrowRight, BookOpen, Calendar, Clock, Mail, MapPin, Phone, Sparkles, Star, Users, X, Zap } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { getBookImage, siteBg } from '@/lib/book-assets';
-import { isMonthPast, type SiteBook, type SiteContent } from '@/lib/site-content';
+import { categorizeBooks, isMonthPast, type SiteBook, type SiteContent } from '@/lib/site-content';
 import { Navigation } from './navigation';
 import { ScrollToTop } from './scroll-to-top';
 import PaymentModal, { calcCardPrice } from '../app/PaymentModal';
@@ -430,74 +430,199 @@ export function BookClubPage({ content }: BookClubPageProps) {
             </div>
           </section>
 
-          {/* Gallery Section */}
-          <section className="mb-32">
-            <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
-              <div>
-                <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                  {content.schedule.galleryTitle}
-                </h2>
-                <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
-                  {content.schedule.galleryDescription}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {content.books.filter((book) => {
-                const isPast = book.isCompleted || (mounted ? isMonthPast(book.month, new Date(), book.meetings) : false);
-                return !isPast;
-              }).map((book, index) => {
-                return (
-                  <BookCard
-                    key={`${book.month}-${book.title}-${index}`}
-                    book={book}
-                    isPast={false}
-                    index={index}
-                    onSelect={setSelectedBook}
-                  />
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Past Books Section */}
+          {/* Current Month's Book — Featured Hero */}
           {(() => {
-            const pastBooks = content.books.filter((book) =>
-              book.isCompleted || (mounted ? isMonthPast(book.month, new Date(), book.meetings) : false)
-            );
-            if (pastBooks.length === 0) return null;
+            const { currentMonth, nextMonth, future, past } = categorizeBooks(content.books, new Date(), mounted);
             return (
-              <section className="mb-32">
-                <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
-                  <div>
-                    <div className="mb-3 flex items-center gap-3">
-                      <div className="h-1 w-8 rounded-full bg-gray-300" />
-                      <span className="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
-                        Already Read
-                      </span>
-                      <div className="h-1 w-8 rounded-full bg-gray-300" />
+              <>
+                {/* Previously Read */}
+                {past.length > 0 && (
+                  <section className="mb-32">
+                    <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
+                      <div>
+                        <div className="mb-3 flex items-center gap-3">
+                          <div className="h-1 w-8 rounded-full bg-gray-300" />
+                          <span className="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
+                            Already Read
+                          </span>
+                          <div className="h-1 w-8 rounded-full bg-gray-300" />
+                        </div>
+                        <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
+                          Previously Read
+                        </h2>
+                        <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
+                          A look back at the titles our teen readers have explored together.
+                        </p>
+                      </div>
                     </div>
-                    <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                      Past Books We&apos;ve Read
-                    </h2>
-                    <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
-                      A look back at the titles our teen readers have explored together.
-                    </p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {pastBooks.map((book, index) => (
-                    <BookCard
-                      key={`past-${book.month}-${book.title}-${index}`}
-                      book={book}
-                      isPast={true}
-                      index={index}
-                      onSelect={() => {}}
-                    />
-                  ))}
-                </div>
-              </section>
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      {past.map((book, index) => (
+                        <BookCard
+                          key={`past-${book.month}-${book.title}-${index}`}
+                          book={book}
+                          isPast={true}
+                          index={index}
+                          onSelect={() => {}}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Future Reading */}
+                {future.length > 0 && (
+                  <section className="mb-32">
+                    <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
+                      <div>
+                        <div className="mb-3 flex items-center gap-3">
+                          <div className="h-1 w-8 rounded-full bg-gray-300" />
+                          <span className="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
+                            On the Horizon
+                          </span>
+                          <div className="h-1 w-8 rounded-full bg-gray-300" />
+                        </div>
+                        <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
+                          Future Reading
+                        </h2>
+                        <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
+                          A look ahead at the titles we&apos;ll be exploring together.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      {future.map((book, index) => (
+                        <BookCard
+                          key={`future-${book.month}-${book.title}-${index}`}
+                          book={book}
+                          isPast={false}
+                          index={index}
+                          onSelect={setSelectedBook}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Next Month's Book */}
+                {nextMonth.length > 0 && (
+                  <section className="mb-32">
+                    <div className="mb-12 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
+                      <div>
+                        <div className="mb-3 flex items-center gap-3">
+                          <div className="h-1 w-8 rounded-full bg-[var(--color-accent)]/50" />
+                          <span className="text-xs font-black uppercase tracking-[0.3em] text-[var(--color-accent)]/70">
+                            Coming Up
+                          </span>
+                          <div className="h-1 w-8 rounded-full bg-[var(--color-accent)]/50" />
+                        </div>
+                        <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
+                          Next Month&apos;s Book
+                        </h2>
+                        <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
+                          Get a head start on next month&apos;s read.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                      {nextMonth.map((book, index) => (
+                        <BookCard
+                          key={`next-${book.month}-${book.title}-${index}`}
+                          book={book}
+                          isPast={false}
+                          index={index}
+                          onSelect={setSelectedBook}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Current Month's Book */}
+                {currentMonth.length > 0 && (
+                  <section className="mb-32">
+                    <div className="mb-12 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
+                      <div>
+                        <div className="mb-3 flex items-center gap-3">
+                          <div className="h-1 w-8 rounded-full bg-[var(--color-accent)]" />
+                          <span className="text-xs font-black uppercase tracking-[0.3em] text-[var(--color-accent)]">
+                            Now Reading
+                          </span>
+                          <div className="h-1 w-8 rounded-full bg-[var(--color-accent)]" />
+                        </div>
+                        <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
+                          This Month&apos;s Book
+                        </h2>
+                        <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
+                          Our current read — join the discussion!
+                        </p>
+                      </div>
+                    </div>
+
+                    {currentMonth.map((book) => {
+                      const coverImage = getBookImage(book.imageKey);
+                      return (
+                        <button
+                          type="button"
+                          key={`current-${book.month}-${book.title}`}
+                          onClick={() => setSelectedBook(book)}
+                          className="group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-white text-left shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)] hover:-translate-y-1"
+                        >
+                          <div className="h-2 w-full bg-[var(--color-accent)]" />
+                          <div className="flex flex-col items-center gap-10 p-8 md:flex-row md:p-12">
+                            {/* Book Cover */}
+                            <div className="relative shrink-0 transition-transform duration-500 group-hover:scale-105">
+                              <div className="relative h-72 w-48 overflow-hidden rounded-lg shadow-2xl md:h-80 md:w-56">
+                                <Image
+                                  src={coverImage}
+                                  alt={book.title}
+                                  fill
+                                  sizes="(max-width: 768px) 192px, 224px"
+                                  className="object-cover"
+                                />
+                              </div>
+                              {/* Pulse badge */}
+                              <div className="absolute -right-3 -top-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-white shadow-lg">
+                                <Star className="h-5 w-5 fill-current" />
+                              </div>
+                            </div>
+
+                            {/* Book Info */}
+                            <div className="flex flex-1 flex-col text-center md:text-left">
+                              <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-accent)]">
+                                {book.month} Selection
+                              </span>
+                              <h3 className="mt-3 text-3xl font-black leading-tight text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent)] md:text-4xl">
+                                {book.title}
+                              </h3>
+                              {book.author && (
+                                <p className="mt-3 text-lg font-medium text-[var(--color-gray-text)]">by {book.author}</p>
+                              )}
+
+                              <div className="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
+                                <div className="flex items-center gap-3 rounded-xl bg-gray-50 px-5 py-3">
+                                  <Calendar className="h-5 w-5 text-[var(--color-accent)]" />
+                                  <span className="text-sm font-bold text-[var(--color-ink)]">{book.meetings}</span>
+                                </div>
+                                <div className="flex items-center gap-3 rounded-xl bg-gray-50 px-5 py-3">
+                                  <Clock className="h-5 w-5 text-[var(--color-accent)]" />
+                                  <span className="text-sm font-bold text-[var(--color-ink)]">{book.time}</span>
+                                </div>
+                              </div>
+
+                              <div className="mt-8 flex items-center justify-center gap-2 text-sm font-black uppercase tracking-widest text-[var(--color-accent)] md:justify-start">
+                                <span>View Details</span>
+                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </section>
+                )}
+              </>
             );
           })()}
 
