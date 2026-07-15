@@ -5,7 +5,7 @@ import { ArrowRight, BookOpen, Calendar, Clock, Mail, MapPin, Phone, Sparkles, S
 import { useEffect, useRef, useState } from 'react';
 
 import { getBookImage, siteBg } from '@/lib/book-assets';
-import { categorizeBooks, isMonthPast, type SiteBook, type SiteContent } from '@/lib/site-content';
+import { categorizeBooks, type SiteBook, type SiteContent } from '@/lib/site-content';
 import { Navigation } from './navigation';
 import { ScrollToTop } from './scroll-to-top';
 import PaymentModal, { calcCardPrice } from '../app/PaymentModal';
@@ -238,6 +238,7 @@ export function AdultsBookClubPage({ content }: AdultsBookClubPageProps) {
   const [mounted, setMounted] = useState(false);
   const hasTrackedVisit = useRef(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [showPastBooks, setShowPastBooks] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -586,37 +587,60 @@ export function AdultsBookClubPage({ content }: AdultsBookClubPageProps) {
                   </section>
                 )}
 
-                {/* Previously Read */}
+                {/* Previously Read (Toggleable, List view, no images) */}
                 {past.length > 0 && (
-                  <section className="mb-32">
-                    <div className="mb-16 flex flex-col items-center justify-between gap-6 border-b border-gray-200 pb-8 md:flex-row md:text-left">
-                      <div>
-                        <div className="mb-3 flex items-center gap-3">
-                          <div className="h-1 w-8 rounded-full bg-gray-300" />
-                          <span className="text-xs font-black uppercase tracking-[0.3em] text-gray-400">
-                            Already Read
-                          </span>
-                          <div className="h-1 w-8 rounded-full bg-gray-300" />
+                  <section className="mb-32 text-center">
+                    <div className="mb-8 flex flex-col items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => setShowPastBooks(!showPastBooks)}
+                        className="inline-flex items-center gap-3 rounded-full bg-white border border-gray-200 hover:border-[var(--color-accent)] px-8 py-4 text-sm font-black uppercase tracking-widest text-[var(--color-ink)] hover:text-[var(--color-accent)] shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-fade-in"
+                      >
+                        <BookOpen className="h-4 w-4" />
+                        <span>{showPastBooks ? 'Hide Past Books Read' : 'View Past Books Read'}</span>
+                      </button>
+                    </div>
+
+                    {showPastBooks && (
+                      <div className="animate-fade-in mx-auto max-w-4xl text-left">
+                        <div className="mb-8 text-center">
+                          <h2 className="text-2xl font-black text-[var(--color-ink)]">
+                            Previously Read Books
+                          </h2>
+                          <p className="mt-2 text-sm text-[var(--color-gray-text)]">
+                            A list of the titles our adult readers have completed.
+                          </p>
                         </div>
-                        <h2 className="text-3xl font-black text-[var(--color-ink)] md:text-4xl">
-                          Previously Read
-                        </h2>
-                        <p className="mt-2 text-lg font-medium text-[var(--color-gray-text)]">
-                          A look back at the titles our adult readers have explored together.
-                        </p>
+                        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300">
+                          <div className="divide-y divide-gray-100">
+                            {past.map((book, index) => (
+                              <div
+                                key={`past-${book.month}-${book.title}-${index}`}
+                                className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-gray-50/50 transition-colors"
+                              >
+                                <div className="flex-1">
+                                  <span className="inline-block rounded-full bg-gray-100 px-3 py-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                                    {book.month}
+                                  </span>
+                                  <h4 className="mt-2 text-lg font-bold text-[var(--color-ink)]">
+                                    {book.title}
+                                  </h4>
+                                  {book.author && (
+                                    <p className="text-sm text-[var(--color-gray-text)]">
+                                      by {book.author}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="mt-4 sm:mt-0 text-left sm:text-right text-xs font-semibold text-gray-400">
+                                  <div>Meetings: {book.meetings}</div>
+                                  <div className="mt-1">Time: {book.time}</div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {past.map((book, index) => (
-                        <BookCard
-                          key={`past-${book.month}-${book.title}-${index}`}
-                          book={book}
-                          isPast={true}
-                          index={index}
-                          onSelect={() => {}}
-                        />
-                      ))}
-                    </div>
+                    )}
                   </section>
                 )}
               </>
