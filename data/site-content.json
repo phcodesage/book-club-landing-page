@@ -20,11 +20,11 @@
     "sectionHeading": "Join the Club and Ignite Your Brilliance"
   },
   "schedule": {
-    "eyebrow": "2026 Reading List",
-    "title": "Teen Books for 2026",
-    "description": "Explore the full lineup and open any current title for the meeting details.",
-    "galleryTitle": "Complete 2026 Reading Schedule",
-    "galleryDescription": "Click on any current book to see the meeting details."
+    "eyebrow": "2027 Reading List",
+    "title": "Teen Books for 2027",
+    "description": "Explore the full 2027 lineup and open any title for meeting details (Wednesdays @ 6PM).",
+    "galleryTitle": "Complete 2027 Reading Schedule",
+    "galleryDescription": "Click on any book to see the meeting details."
   },
   "modal": {
     "ctaLabel": "Reserve Your Spot",
@@ -46,205 +46,223 @@
   },
   "books": [
     {
-      "month": "January 2026",
-      "title": "You Are Stronger Than You Think",
-      "author": "Gary Lew",
-      "meetings": "January 15 and 29",
-      "time": "5:00 PM",
-      "imageKey": "stronger-than-you-think",
-      "isCompleted": true
-    },
-    {
-      "month": "February 2026",
-      "title": "You: The Owner's Manual for Teens",
-      "author": "",
-      "meetings": "February 11 and 25",
-      "time": "5:00 PM",
-      "imageKey": "you-owners-manual",
-      "isCompleted": true
-    },
-    {
-      "month": "March 2026",
-      "title": "Behind Happy Faces: Talking About Mental Health and Emotion",
-      "author": "Ross Szabo",
-      "meetings": "March 12 and 26",
-      "time": "5:00 PM",
-      "imageKey": "behind-happy-faces",
-      "isCompleted": true
-    },
-    {
-      "month": "April 2026",
-      "title": "The Leader in Me (Teens Edition)",
-      "author": "Stephen Covey",
-      "meetings": "April 9 and 30",
-      "time": "5:00 PM",
-      "imageKey": "leader-in-me"
-    },
-    {
-      "month": "May 2026",
-      "title": "Don't Sweat the Small Stuff for Teens",
-      "author": "Richard Carlson",
-      "meetings": "May 14 and 28",
-      "time": "5:00 PM",
-      "imageKey": "dont-sweat-small-stuff"
-    },
-    {
-      "month": "June 2026",
-      "title": "The Teen's Guide for Making and Making Friends",
-      "author": "Lucie Hemmen, PhD",
-      "meetings": "June 11 and 25",
-      "time": "5:00 PM",
-      "imageKey": "teens-guide-friends"
-    },
-    {
-      "month": "July 2026",
-      "title": "Get Out of My Life, but First Could You Drive Me and Cheryl to the Mall?",
-      "author": "",
-      "meetings": "July 9 and 30",
-      "time": "5:00 PM",
-      "imageKey": "get-out-of-my-life"
-    },
-    {
-      "month": "August 2026",
-      "title": "BFF and NRF (Not Really Friends) - Friendship Health Guide",
-      "author": "",
-      "meetings": "August 13 and 27",
+      "month": "January 2027",
+      "title": "The 5 Second Rule",
+      "author": "Mel Robbins",
+      "category": "Health & Fitness",
+      "meetings": "January 13 and 27",
       "time": "6:00 PM",
-      "imageKey": "bff-and-nrf"
+      "imageKey": "the-5-second-rule"
     },
     {
-      "month": "September 2026",
-      "title": "The Teen Investor: How to Start Early, Invest Often and Build Wealth",
-      "author": "Emmanuel Modu and Andrea Walker",
-      "meetings": "September 10 and 24",
-      "time": "5:00 PM",
-      "imageKey": "teen-investor"
+      "month": "February 2027",
+      "title": "The Fault in Our Stars",
+      "author": "John Green",
+      "category": "Love & Relationships",
+      "meetings": "February 10 and 24",
+      "time": "6:00 PM",
+      "imageKey": "the-fault-in-our-stars"
     },
     {
-      "month": "October 2026",
-      "title": "Life Skills for Teens",
-      "author": "Forne Bowe",
-      "meetings": "October 8 and 29",
-      "time": "5:00 PM",
-      "imageKey": "life-skills"
+      "month": "March 2027",
+      "title": "Conquer Negative Thinking for Teens",
+      "author": "Mary K. Alvord & Anne McGrath",
+      "category": "Emotional Life",
+      "meetings": "March 17 and 31",
+      "time": "6:00 PM",
+      "imageKey": "conquer-negative-thinking"
     },
     {
-      "month": "November 2026",
-      "title": "A Year of Positive Thinking for Teens",
-      "author": "Katie Hurley",
-      "meetings": "November 12 and 26",
-      "time": "5:00 PM",
-      "imageKey": "positive-thinking"
+      "month": "April 2027",
+      "title": "Esperanza Rising",
+      "author": "Pam Muñoz Ryan",
+      "category": "Family",
+      "meetings": "April 14 and 28",
+      "time": "6:00 PM",
+      "imageKey": "esperanza-rising"
     },
     {
-      "month": "December 2026",
-      "title": "What Do You Really Want? How to Set a Goal and Go for It!",
-      "author": "Beverly K. Bachel",
-      "meetings": "December 3 and 23",
-      "time": "5:00 PM",
-      "imageKey": "what-do-you-really-want"
+      "month": "May 2027",
+      "title": "The 6 Most Important Decisions You'll Ever Make",
+      "author": "Sean Covey",
+      "category": "Social Life",
+      "meetings": "May 12 and 26",
+      "time": "6:00 PM",
+      "imageKey": "6-most-important-decisions"
+    },
+    {
+      "month": "June 2027",
+      "title": "The Midnight Library",
+      "author": "Matt Haig",
+      "category": "Quality of Life",
+      "meetings": "June 16 and 30",
+      "time": "6:00 PM",
+      "imageKey": "the-midnight-library"
+    },
+    {
+      "month": "July 2027",
+      "title": "The Dalai Lama's Cat",
+      "author": "David Michie",
+      "category": "Spiritual Life",
+      "meetings": "July 14 and 28",
+      "time": "6:00 PM",
+      "imageKey": "dalai-lamas-cat"
+    },
+    {
+      "month": "August 2027",
+      "title": "Unlimited Memory",
+      "author": "Kevin Horsley",
+      "category": "Intellectual Life",
+      "meetings": "August 11 and 25",
+      "time": "6:00 PM",
+      "imageKey": "unlimited-memory"
+    },
+    {
+      "month": "September 2027",
+      "title": "Make Your Bed",
+      "author": "Admiral William H. McRaven",
+      "category": "Character",
+      "meetings": "September 15 and 29",
+      "time": "6:00 PM",
+      "imageKey": "make-your-bed"
+    },
+    {
+      "month": "October 2027",
+      "title": "How to Become a Straight-A Student",
+      "author": "Cal Newport",
+      "category": "Career / Education",
+      "meetings": "October 13 and 27",
+      "time": "6:00 PM",
+      "imageKey": "straight-a-student"
+    },
+    {
+      "month": "November 2027",
+      "title": "Rich Dad Poor Dad for Teens",
+      "author": "Robert Kiyosaki",
+      "category": "Financial Life",
+      "meetings": "November 10 and 24",
+      "time": "6:00 PM",
+      "imageKey": "rich-dad-poor-dad-teens"
+    },
+    {
+      "month": "December 2027",
+      "title": "You Are a Badass",
+      "author": "Jen Sincero",
+      "category": "Life Vision",
+      "meetings": "December 15 and 29",
+      "time": "6:00 PM",
+      "imageKey": "you-are-a-badass"
     }
   ],
   "adultsBooks": [
     {
-      "month": "January 2026",
-      "title": "Mind - Gut Connection",
-      "author": "Dr. Emeran Mayer",
-      "meetings": "January 12 and 26",
+      "month": "January 2027",
+      "title": "Why We Sleep",
+      "author": "Matthew Walker",
+      "category": "Health & Fitness",
+      "meetings": "January 12 and 27",
       "time": "6:00 PM",
-      "imageKey": "mind-gut-connection",
-      "isCompleted": true
+      "imageKey": "why-we-sleep"
     },
     {
-      "month": "February 2026",
-      "title": "The Book of Joy",
-      "author": "Dalai Lama & Desmond Tutu",
-      "meetings": "February 9 and 23",
+      "month": "February 2027",
+      "title": "Attached",
+      "author": "Amir Levine & Rachel Heller",
+      "category": "Love & Relationships",
+      "meetings": "February 8 and 22",
       "time": "6:00 PM",
-      "imageKey": "book-of-joy",
-      "isCompleted": true
+      "imageKey": "attached"
     },
     {
-      "month": "March 2026",
-      "title": "Atlas of the Heart",
-      "author": "Brene Brown",
-      "meetings": "March 9 and 30",
+      "month": "March 2027",
+      "title": "The Happiness Trap",
+      "author": "Russ Harris",
+      "category": "Emotional Life",
+      "meetings": "March 15 and 29",
       "time": "6:00 PM",
-      "imageKey": "atlas-of-the-heart",
-      "isCompleted": true
+      "imageKey": "the-happiness-trap"
     },
     {
-      "month": "April 2026",
-      "title": "Grit",
-      "author": "Angela Duckworth",
-      "meetings": "April 13 and 27",
+      "month": "April 2027",
+      "title": "Hunt, Gather, Parent",
+      "author": "Michaeleen Doucleff",
+      "category": "Family",
+      "meetings": "April 12 and 26",
       "time": "6:00 PM",
-      "imageKey": "grit"
+      "imageKey": "hunt-gather-parent"
     },
     {
-      "month": "May 2026",
-      "title": "Sacred Rest",
-      "author": "Sandra Dalton-Smith",
-      "meetings": "May 11 and 25",
+      "month": "May 2027",
+      "title": "Find Your People",
+      "author": "Jennie Allen",
+      "category": "Social Life",
+      "meetings": "May 17 and 31",
       "time": "6:00 PM",
-      "imageKey": "sacred-rest"
+      "imageKey": "find-your-people"
     },
     {
-      "month": "June 2026",
-      "title": "Set Boundaries, Find Peace",
-      "author": "Nedra Glover Tawwab",
-      "meetings": "June 8 and 29",
+      "month": "June 2027",
+      "title": "The Blue Zones",
+      "author": "Dan Buettner",
+      "category": "Quality of Life",
+      "meetings": "June 14 and 28",
       "time": "6:00 PM",
-      "imageKey": "set-boundaries"
+      "imageKey": "the-blue-zones"
     },
     {
-      "month": "July 2026",
-      "title": "Good Inside",
-      "author": "Dr. Becky Kennedy",
+      "month": "July 2027",
+      "title": "When Things Fall Apart",
+      "author": "Pema Chödrön",
+      "category": "Spiritual Life",
       "meetings": "July 13 and 27",
       "time": "6:00 PM",
-      "imageKey": "good-inside"
+      "imageKey": "when-things-fall-apart"
     },
     {
-      "month": "August 2026",
-      "title": "Braving the Wilderness",
-      "author": "Brene Brown",
-      "meetings": "August 10 and 31",
+      "month": "August 2027",
+      "title": "The Brain That Changes Itself",
+      "author": "Norman Doidge",
+      "category": "Intellectual Life",
+      "meetings": "August 16 and 30",
       "time": "6:00 PM",
-      "imageKey": "braving-wilderness"
+      "imageKey": "the-brain-that-changes-itself"
     },
     {
-      "month": "September 2026",
-      "title": "Money Magic",
-      "author": "Laurence Kotlikoff",
-      "meetings": "September 14 and 28",
+      "month": "September 2027",
+      "title": "The Second Mountain",
+      "author": "David Brooks",
+      "category": "Character",
+      "meetings": "September 13 and 27",
       "time": "6:00 PM",
-      "imageKey": "money-magic"
+      "imageKey": "the-second-mountain"
     },
     {
-      "month": "October 2026",
-      "title": "The Lean Startup",
-      "author": "Eric Ries",
-      "meetings": "October 12 and 26",
+      "month": "October 2027",
+      "title": "Drive: The Surprising Truth About What Motivates Us",
+      "author": "Daniel Pink",
+      "category": "Career / Education",
+      "meetings": "October 11 and 25",
       "time": "6:00 PM",
-      "imageKey": "lean-startup"
+      "imageKey": "drive-daniel-pink"
     },
     {
-      "month": "November 2026",
-      "title": "Essentialism",
+      "month": "November 2027",
+      "title": "I Will Teach You to Be Rich",
+      "author": "Ramit Sethi",
+      "category": "Financial Life",
+      "meetings": "November 15 and 29",
+      "time": "6:00 PM",
+      "imageKey": "i-will-teach-you-to-be-rich"
+    },
+    {
+      "month": "December 2027",
+      "title": "Essentialism: The Disciplined Pursuit of Less",
       "author": "Greg McKeown",
-      "meetings": "November 9 and 30",
+      "category": "Life Vision",
+      "meetings": "December 13 and 27",
       "time": "6:00 PM",
       "imageKey": "essentialism"
-    },
-    {
-      "month": "December 2026",
-      "title": "Your Best Year Ever",
-      "author": "Michael Hyatt",
-      "meetings": "December 14 and 28",
-      "time": "6:00 PM",
-      "imageKey": "best-year-ever"
     }
   ]
-
+}
 }
